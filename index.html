@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYP3RSP4C3 :: Mainframe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-black text-green-400 min-h-screen">
+    <div id="vanta-bg" class="fixed inset-0 z-0 opacity-30"></div>
+    <div class="scanline z-10"></div>
+    <div class="container mx-auto px-4 py-8 relative z-20">
+        <!-- Header -->
+        <header class="mb-12">
+            <h1 class="glitch text-4xl md:text-6xl font-bold mb-2" data-text="HYP3RSP4C3">HYP3RSP4C3</h1>
+            <div class="flex items-center space-x-2 text-xs md:text-sm">
+                <span class="bg-red-500 px-2 py-1 rounded">SYSTEM ALERT</span>
+                <span>MAINFRAME ACCESS GRANTED</span>
+                <span id="datetime" class="ml-auto"></span>
+            </div>
+        </header>
+        <!-- Main Terminal -->
+        <div class="bg-black border-2 border-green-500 rounded-md p-4 mb-8">
+            <div class="terminal-output mb-4 h-64 overflow-y-auto">
+                <p class="text-green-300">&gt; INITIALIZING HYP3RSP4C3 TERMINAL...</p>
+                <p class="text-green-300">&gt; LOADING CRYPTIC MODULES ███████████ 100%</p>
+                <p class="text-green-300">&gt; WELCOME, USER [UNKNOWN]</p>
+                <p class="text-green-300">&gt; SYSTEM STATUS: <span class="text-green-500">SECURE</span></p>
+                <p class="text-green-300">&gt; CONNECTION: <span class="text-green-500">ENCRYPTED</span></p>
+                <p class="text-green-300">&gt; LAST LOGIN: NEVER</p>
+                <p class="text-green-300">&gt; TYPE 'HELP' FOR COMMANDS</p>
+                <p class="text-green-300">&gt;</p>
+            </div>
+            <div class="flex items-center terminal-input">
+                <input type="text" class="bg-transparent border-none outline-none flex-grow text-green-400" placeholder="ENTER COMMAND..." autofocus>
+                <button class="ml-2 bg-green-900 text-green-400 px-3 py-1 rounded hover:bg-green-800 transition">
+                    <i data-feather="send"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Grid System -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <!-- System Status -->
+            <div class="bg-black bg-opacity-70 border border-green-500 rounded-md p-4">
+                <h2 class="text-xl mb-2 flex items-center">
+                    <i data-feather="cpu" class="mr-2"></i> SYSTEM STATUS
+                </h2>
+                <div class="space-y-2">
+                    <div>
+                        <span class="text-green-300">CPU:</span>
+                        <div class="w-full bg-gray-800 rounded-full h-2.5">
+                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-green-300">RAM:</span>
+                        <div class="w-full bg-gray-800 rounded-full h-2.5">
+                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-green-300">STORAGE:</span>
+                        <div class="w-full bg-gray-800 rounded-full h-2.5">
+                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <span class="text-green-300">NETWORK: <span class="text-green-500">ACTIVE</span></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Activity -->
+            <div class="bg-black bg-opacity-70 border border-green-500 rounded-md p-4">
+                <h2 class="text-xl mb-2 flex items-center">
+                    <i data-feather="activity" class="mr-2"></i> RECENT ACTIVITY
+                </h2>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-center">
+                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span>NEW CONNECTION ESTABLISHED</span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span>FIREWALL UPDATED [v4.2.0]</span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span>3 NEW THREATS NEUTRALIZED</span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span>DATA ENCRYPTION ACTIVE</span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span>SYSTEM SCAN COMPLETE</span>
+                    </li>
+                </ul>
+            </div>
+            <!-- Quick Access -->
+            <div class="bg-black bg-opacity-70 border border-green-500 rounded-md p-4">
+                <h2 class="text-xl mb-2 flex items-center">
+                    <i data-feather="zap" class="mr-2"></i> QUICK ACCESS
+                </h2>
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
+                        <i data-feather="lock" class="mr-1"></i> SECURITY
+                    </button>
+                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
+                        <i data-feather="database" class="mr-1"></i> DATA
+                    </button>
+                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
+                        <i data-feather="wifi" class="mr-1"></i> NETWORK
+                    </button>
+                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition" onclick="window.open('https://algebraicformulas-15007560.codehs.me/', '_blank')">
+                        <i data-feather="divide-square" class="mr-1"></i> GN-MATH
+                    </button>
+                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition" onclick="window.open('https://excel.theme.ryansilvester.com/', '_blank')">
+                        <i data-feather="cloud" class="mr-1"></i> UTOPIA
+                    </button>
+                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition" onclick="window.open('https://quickphysics.a-quo.com/', '_blank')">
+                        <i data-feather="moon" class="mr-1"></i> SHADOW
+                    </button>
+                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
+                        <i data-feather="terminal" class="mr-1"></i> CMD
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer class="text-xs text-green-700 text-center">
+            <p>WARNING: UNAUTHORIZED ACCESS TO THIS SYSTEM IS PROHIBITED</p>
+            <p class="mt-1">ALL ACTIVITIES ARE MONITORED AND LOGGED</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
