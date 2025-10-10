@@ -289,7 +289,7 @@ terminalInput.addEventListener('keydown', async function(e) {
                     -r: Restart sequence`;
             }
         } else if (mainCommand === 'search') {
-            window.open('browser.html', '_blank');
+            window.open('HYP3RSP4C3-BROWSER/browser.html', '_blank');
             response = `Opening HYP3RSP4C3 Browser in a new tab...`;
         } else if (mainCommand === 'halo') {
             // H.A.L.O assistant interaction

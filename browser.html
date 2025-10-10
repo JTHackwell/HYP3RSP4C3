@@ -76,6 +76,8 @@
             </div>
             <div id="browser-security-msg" style="margin:1rem 0;color:#ffb400;font-weight:bold;">Always use HTTPS for secure browsing. Unsafe sites will be blocked.</div>
             <div id="browser-anon-msg" style="margin:0.5rem 0;color:#00eaff;font-size:0.95rem;display:none;"></div>
+            <div id="browser-fail-msg" style="margin:0.5rem 0;color:#ff4c4c;font-size:0.95rem;display:none;"></div>
+            <button id="browser-open-tab" class="browser-btn" style="display:none;margin-bottom:1rem;">Open in New Tab</button>
             <iframe id="browser-frame" src="about:blank" class="browser-frame"></iframe>
         </div>
         <div class="browser-panel mt-8">
@@ -101,6 +103,12 @@
         const frame = document.getElementById('browser-frame');
         const secMsg = document.getElementById('browser-security-msg');
         const anonMsg = document.getElementById('browser-anon-msg');
+        const failMsg = document.getElementById('browser-fail-msg');
+        const openTabBtn = document.getElementById('browser-open-tab');
+
+        // Set your deployed proxy server URL here (not localhost for Netlify)
+        // Example: 'https://hyp3rsp4c3-browser.onrender.com/proxy?url='
+        const PROXY_URL = 'https://hyp3rsp4c3-browser.onrender.com/proxy?url=';
 
         // Blocklist for trackers/unsafe domains (example)
         const blocklist = [
@@ -112,15 +120,22 @@
         }
 
         goBtn.onclick = function() {
-            let url = urlInput.value.trim();
-            if (url && !/^https?:\/\//.test(url)) {
-                url = 'https://' + url;
+            let input = urlInput.value.trim();
+            let url = input;
+            // If input is empty, default to DuckDuckGo homepage
+            if (!input) {
+                url = 'https://duckduckgo.com';
+            } else if (!/^https?:\/\//.test(input)) {
+                // If input is not a URL, treat as DuckDuckGo search
+                url = `https://duckduckgo.com/?q=${encodeURIComponent(input)}`;
             }
             // Block unsafe URLs
             if (!url.startsWith('https://')) {
                 secMsg.textContent = 'Blocked: Only HTTPS sites are allowed for security.';
                 frame.src = 'about:blank';
                 anonMsg.style.display = 'none';
+                failMsg.style.display = 'none';
+                openTabBtn.style.display = 'none';
                 return;
             }
             // Block known trackers/unsafe domains
@@ -128,22 +143,61 @@
                 secMsg.textContent = 'Blocked: This domain is known for tracking or is unsafe.';
                 frame.src = 'about:blank';
                 anonMsg.style.display = 'none';
+                failMsg.style.display = 'none';
+                openTabBtn.style.display = 'none';
                 return;
             }
-            secMsg.textContent = 'Browsing securely.';
-            frame.src = url || 'about:blank';
+            if (proxyBtn.classList.contains('active')) {
+                secMsg.textContent = 'Browsing securely through proxy.';
+                frame.src = PROXY_URL + encodeURIComponent(url);
+            } else {
+                secMsg.textContent = 'Browsing securely.';
+                frame.src = url || 'about:blank';
+            }
             anonMsg.style.display = 'none';
+            failMsg.style.display = 'none';
+            openTabBtn.style.display = 'none';
+            // Store last url for open in tab
+            openTabBtn.dataset.url = url;
         };
         clearBtn.onclick = function() {
             urlInput.value = '';
             frame.src = 'about:blank';
             secMsg.textContent = 'Browsing data cleared. Always use HTTPS for secure browsing.';
             anonMsg.style.display = 'none';
+            failMsg.style.display = 'none';
+            openTabBtn.style.display = 'none';
         };
         proxyBtn.onclick = function() {
-            anonMsg.textContent = 'Proxy enabled: Your IP is masked and browsing is anonymous (simulated). For true anonymity, use Tor or a trusted VPN.';
-            anonMsg.style.display = 'block';
-            secMsg.textContent = 'Proxy mode: Enhanced privacy.';
+            proxyBtn.classList.toggle('active');
+            if (proxyBtn.classList.contains('active')) {
+                anonMsg.textContent = 'Proxy enabled: Your IP is masked and browsing is anonymous (simulated). For true anonymity, use Tor or a trusted VPN.';
+                anonMsg.style.display = 'block';
+                secMsg.textContent = 'Proxy mode: Enhanced privacy.';
+            } else {
+                anonMsg.style.display = 'none';
+                secMsg.textContent = 'Proxy mode disabled.';
+            }
+        };
+        // Detect iframe load errors
+        frame.addEventListener('load', function() {
+            // Some browsers fire 'load' even if the page is blocked, so check for blank
+            if (frame.contentWindow.location.href === 'about:blank') return;
+            // Try to access the document, will throw if blocked
+            try {
+                const test = frame.contentDocument || frame.contentWindow.document;
+                // If loaded, hide fail message
+                failMsg.style.display = 'none';
+                openTabBtn.style.display = 'none';
+            } catch (e) {
+                failMsg.textContent = 'This site cannot be embedded due to browser security restrictions.';
+                failMsg.style.display = 'block';
+                openTabBtn.style.display = 'inline-block';
+            }
+        });
+        openTabBtn.onclick = function() {
+            const url = openTabBtn.dataset.url;
+            if (url) window.open(url, '_blank');
         };
     </script>
 </body>
