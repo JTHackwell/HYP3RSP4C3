@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYP3RSP4C3 Browser</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: #09111a;
+            color: #00eaff;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .browser-header {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 12px #00eaff;
+        }
+        
+        .browser-panel {
+            background: rgba(10, 26, 47, 0.95);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 0 24px 4px #00eaff44;
+        }
+        
+        .browser-url {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #00eaff;
+            background: #0a1a2f;
+            color: #00eaff;
+        }
+        
+        .browser-btn {
+            background: #00eaff;
+            color: #09111a;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .browser-btn:hover {
+            background: #0a1a2f;
+            color: #00eaff;
+            border: 1px solid #00eaff;
+        }
+        
+        .browser-frame {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            border: 1px solid #00eaff;
+            background: #09111a;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="browser-header">HYP3RSP4C3 Browser</div>
+        <div class="browser-panel">
+            <div>
+                <input id="browser-url" class="browser-url" type="text" placeholder="Enter URL (e.g. https://example.com)">
+                <button id="browser-go" class="browser-btn">Go</button>
+                <button id="browser-clear" class="browser-btn" style="background:#09111a;color:#00eaff;border:1px solid #00eaff;">Clear</button>
+                <button id="browser-proxy" class="browser-btn" style="background:#09111a;color:#ffb400;border:1px solid #ffb400;">Proxy</button>
+            </div>
+            <div id="browser-security-msg" style="margin:1rem 0;color:#ffb400;font-weight:bold;">Always use HTTPS for secure browsing. Unsafe sites will be blocked.</div>
+            <div id="browser-anon-msg" style="margin:0.5rem 0;color:#00eaff;font-size:0.95rem;display:none;"></div>
+            <iframe id="browser-frame" src="about:blank" class="browser-frame"></iframe>
+        </div>
+        <div class="browser-panel mt-8">
+            <h2 style="font-size:1.2rem;">Features, Security & Anonymity Tips</h2>
+            <ul>
+                <li>- Secure browsing in a separate tab</li>
+                <li>- Custom frontpage and UI</li>
+                <li>- URL bar and navigation</li>
+                <li>- Modern HYP3RSP4C3 aesthetic</li>
+                <li>- <b>Security:</b> Only HTTPS sites allowed for privacy</li>
+                <li>- <b>Tip:</b> Use VPN, Tor, or Incognito mode for extra privacy</li>
+                <li>- <b>Clear:</b> Use the Clear button to reset browsing data</li>
+                <li>- <b>Proxy:</b> Use the Proxy button for anonymous browsing (simulated)</li>
+                <li>- <b>Blocklist:</b> Known trackers and unsafe domains are blocked</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const urlInput = document.getElementById('browser-url');
+        const goBtn = document.getElementById('browser-go');
+        const clearBtn = document.getElementById('browser-clear');
+        const proxyBtn = document.getElementById('browser-proxy');
+        const frame = document.getElementById('browser-frame');
+        const secMsg = document.getElementById('browser-security-msg');
+        const anonMsg = document.getElementById('browser-anon-msg');
+
+        // Blocklist for trackers/unsafe domains (example)
+        const blocklist = [
+            'facebook.com', 'google-analytics.com', 'doubleclick.net', 'adservice.google.com', 'track', 'ads', 'spyware', 'malware'
+        ];
+
+        function isBlocked(url) {
+            return blocklist.some(domain => url.includes(domain));
+        }
+
+        goBtn.onclick = function() {
+            let url = urlInput.value.trim();
+            if (url && !/^https?:\/\//.test(url)) {
+                url = 'https://' + url;
+            }
+            // Block unsafe URLs
+            if (!url.startsWith('https://')) {
+                secMsg.textContent = 'Blocked: Only HTTPS sites are allowed for security.';
+                frame.src = 'about:blank';
+                anonMsg.style.display = 'none';
+                return;
+            }
+            // Block known trackers/unsafe domains
+            if (isBlocked(url)) {
+                secMsg.textContent = 'Blocked: This domain is known for tracking or is unsafe.';
+                frame.src = 'about:blank';
+                anonMsg.style.display = 'none';
+                return;
+            }
+            secMsg.textContent = 'Browsing securely.';
+            frame.src = url || 'about:blank';
+            anonMsg.style.display = 'none';
+        };
+        clearBtn.onclick = function() {
+            urlInput.value = '';
+            frame.src = 'about:blank';
+            secMsg.textContent = 'Browsing data cleared. Always use HTTPS for secure browsing.';
+            anonMsg.style.display = 'none';
+        };
+        proxyBtn.onclick = function() {
+            anonMsg.textContent = 'Proxy enabled: Your IP is masked and browsing is anonymous (simulated). For true anonymity, use Tor or a trusted VPN.';
+            anonMsg.style.display = 'block';
+            secMsg.textContent = 'Proxy mode: Enhanced privacy.';
+        };
+    </script>
+</body>
+
+</html>

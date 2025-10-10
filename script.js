@@ -288,6 +288,9 @@ terminalInput.addEventListener('keydown', async function(e) {
                     -u: System update<br>
                     -r: Restart sequence`;
             }
+        } else if (mainCommand === 'search') {
+            window.open('browser.html', '_blank');
+            response = `Opening HYP3RSP4C3 Browser in a new tab...`;
         } else if (mainCommand === 'halo') {
             // H.A.L.O assistant interaction
             let haloMsg = `<b>H.A.L.O:</b> Hello, I am your personal assistant! I can help you with math, science, and problem solving.<br>`;
@@ -317,7 +320,8 @@ terminalInput.addEventListener('keydown', async function(e) {
                     - DISCONNECT: Return to unmasked state<br>
                     - RUN: Execute system operations (use with flags)<br>
                     - REBOOT: Reset terminal interface<br>
-                    - SHADOW: Access quantum physics portal`;
+                    - SHADOW: Access quantum physics portal<br>
+                    - SEARCH: Open the HYP3RSP4C3 Browser in a new tab`;
                     break;
                 case 'status':
                     response = `SYSTEM STATUS:<br>
