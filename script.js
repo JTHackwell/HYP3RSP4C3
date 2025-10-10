@@ -289,8 +289,8 @@ terminalInput.addEventListener('keydown', async function(e) {
                     -r: Restart sequence`;
             }
         } else if (mainCommand === 'search') {
-            window.open('HYP3RSP4C3-BROWSER/browser.html', '_blank');
-            response = `Opening HYP3RSP4C3 Browser in a new tab...`;
+            window.location.href = 'HYP3RSP4C3-BROWSER/browser.html';
+            response = `Redirecting to HYP3RSP4C3 Browser...`;
         } else if (mainCommand === 'halo') {
             // H.A.L.O assistant interaction
             let haloMsg = `<b>H.A.L.O:</b> Hello, I am your personal assistant! I can help you with math, science, and problem solving.<br>`;
