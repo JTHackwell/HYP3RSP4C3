@@ -28,6 +28,208 @@ updateDateTime();
 
 // Feather icons
 feather.replace();
+// Add event listener for NETWORK button in Quick Access
+document.addEventListener('DOMContentLoaded', () => {
+    // CMD button password and admin panel
+    const cmdBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('CMD'));
+    if (cmdBtn) {
+        cmdBtn.addEventListener('click', () => {
+            const pwd = prompt('Enter admin password:');
+            if (pwd === '1812') {
+                showAdminPanel();
+            } else {
+                alert('Incorrect password. Access denied.');
+            }
+        });
+    }
+
+    // Admin panel function
+    function showAdminPanel() {
+        // Create admin panel overlay
+        let adminDiv = document.getElementById('admin-panel');
+        if (!adminDiv) {
+            adminDiv = document.createElement('div');
+            adminDiv.id = 'admin-panel';
+            adminDiv.style.position = 'fixed';
+            adminDiv.style.top = '0';
+            adminDiv.style.left = '0';
+            adminDiv.style.width = '100vw';
+            adminDiv.style.height = '100vh';
+            adminDiv.style.background = 'rgba(10,26,47,0.98)';
+            adminDiv.style.zIndex = '9999';
+            adminDiv.style.color = '#00eaff';
+            adminDiv.style.padding = '40px';
+            adminDiv.style.overflowY = 'auto';
+            adminDiv.innerHTML = `
+                <h2 style="font-size:2rem;" class="jarvis-header mb-4">Admin Panel</h2>
+                <p>Welcome, Admin! Here are your monitoring tools:</p>
+                <ul style="margin:1rem 0 2rem 0;">
+                    <li>- <b>Site Activity Log</b> (simulated)</li>
+                    <li>- <b>User List</b> (simulated)</li>
+                    <li>- <b>Security Controls</b> (simulated)</li>
+                    <li>- <b>Site Stats</b></li>
+                    <li>- <b>User Actions</b></li>
+                    <li>- <b>Broadcast Message</b></li>
+                </ul>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">Site Activity Log</h3>
+                    <div id="admin-activity" style="background:#09111a;padding:1rem;border-radius:8px;">No suspicious activity detected.</div>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">User List</h3>
+                    <div id="admin-users" style="background:#09111a;padding:1rem;border-radius:8px;">Current users: [Simulated: 1 - You]</div>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">Site Stats</h3>
+                    <div id="admin-stats" style="background:#09111a;padding:1rem;border-radius:8px;">
+                        <b>Uptime:</b> <span id="admin-uptime">Calculating...</span><br>
+                        <b>Commands Executed:</b> <span id="admin-cmds">0</span><br>
+                        <b>Calculator Uses:</b> <span id="admin-calc">0</span>
+                    </div>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">User Actions</h3>
+                    <div id="admin-actions" style="background:#09111a;padding:1rem;border-radius:8px;">
+                        <button id="admin-log-action" class="jarvis-btn px-3 py-1 rounded">Log User Action</button>
+                        <div id="admin-action-log" style="margin-top:1rem;"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">Broadcast Message</h3>
+                    <input id="admin-broadcast-input" type="text" class="bg-gray-900 text-cyan-300 px-3 py-2 rounded w-full" placeholder="Enter message to broadcast">
+                    <button id="admin-broadcast-btn" class="jarvis-btn px-3 py-1 rounded mt-2">Send Broadcast</button>
+                    <div id="admin-broadcast-log" style="margin-top:1rem;"></div>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">Security Controls</h3>
+                    <button id="admin-close" class="jarvis-btn px-3 py-1 rounded">Close Admin Panel</button>
+                </div>
+            `;
+            document.body.appendChild(adminDiv);
+            document.getElementById('admin-close').onclick = () => {
+                adminDiv.remove();
+            };
+            // Uptime
+            const startTime = window._adminStartTime || (window._adminStartTime = Date.now());
+
+            function updateUptime() {
+                const now = Date.now();
+                const diff = Math.floor((now - startTime) / 1000);
+                const mins = Math.floor(diff / 60);
+                const secs = diff % 60;
+                document.getElementById('admin-uptime').textContent = `${mins}m ${secs}s`;
+            }
+            updateUptime();
+            setInterval(updateUptime, 1000);
+            // Command and calculator counters
+            document.getElementById('admin-cmds').textContent = window._adminCmds || '0';
+            document.getElementById('admin-calc').textContent = window._adminCalc || '0';
+            // User Actions
+            const actionLog = document.getElementById('admin-action-log');
+            document.getElementById('admin-log-action').onclick = () => {
+                const entry = `User performed an action at ${new Date().toLocaleTimeString()}`;
+                actionLog.innerHTML += `<div>${entry}</div>`;
+            };
+            // Broadcast Message
+            document.getElementById('admin-broadcast-btn').onclick = () => {
+                const msg = document.getElementById('admin-broadcast-input').value;
+                if (msg) {
+                    document.getElementById('admin-broadcast-log').innerHTML += `<div><b>Broadcast:</b> ${msg}</div>`;
+                    document.getElementById('admin-broadcast-input').value = '';
+                }
+            };
+        }
+    }
+    // Embedded browser panel logic
+    const browserUrl = document.getElementById('browser-url');
+    const browserGo = document.getElementById('browser-go');
+    const browserFrame = document.getElementById('browser-frame');
+    if (browserGo && browserUrl && browserFrame) {
+        browserGo.addEventListener('click', () => {
+            let url = browserUrl.value.trim();
+            if (url && !/^https?:\/\//.test(url)) {
+                url = 'https://' + url;
+            }
+            browserFrame.src = url || 'about:blank';
+        });
+    }
+    // Calculator event handling
+    const calcInput = document.getElementById('calc-input');
+    const calcEvalBtn = document.getElementById('calc-eval');
+    const calcGraphBtn = document.getElementById('calc-graph');
+    const calcResult = document.getElementById('calc-result');
+    const calcGraphArea = document.getElementById('calc-graph-area');
+    if (calcEvalBtn && calcInput && calcResult) {
+        calcEvalBtn.addEventListener('click', () => {
+            const expr = calcInput.value;
+            if (expr) {
+                const result = calculateExpression(expr);
+                let assistant = assistantHelp(expr);
+                calcResult.innerHTML = result + (assistant ? `<br><b>Assistant:</b> ${assistant}` : '');
+                calcGraphArea.innerHTML = '';
+            }
+        });
+    }
+    if (calcGraphBtn && calcInput && calcGraphArea) {
+        calcGraphBtn.addEventListener('click', () => {
+            const expr = calcInput.value;
+            if (expr) {
+                plotGraph(expr, 'calc-graph-area');
+                calcResult.innerHTML = '';
+            }
+        });
+    }
+    const networkBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('NETWORK'));
+    if (networkBtn) {
+        networkBtn.addEventListener('click', async() => {
+            let output = '<span class="text-green-400">NETWORK INFORMATION:</span><br>';
+            // Get public IP address
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                output += `IP Address: <span class="text-green-300">${ipData.ip}</span><br>`;
+            } catch {
+                output += 'IP Address: <span class="text-red-400">Unavailable</span><br>';
+            }
+            // Connection type (limited in browser)
+            if (navigator.connection) {
+                output += `Connection Type: <span class="text-green-300">${navigator.connection.effectiveType}</span><br>`;
+                output += `Downlink: <span class="text-green-300">${navigator.connection.downlink} Mbps</span><br>`;
+            } else {
+                output += 'Connection Type: <span class="text-red-400">Unavailable</span><br>';
+            }
+            // WiFi SSID is not accessible from browser JS for privacy reasons
+            output += 'WiFi SSID: <span class="text-yellow-400">Not accessible in browser</span><br>';
+            // Display in terminal output
+            const responseElement = document.createElement('p');
+            responseElement.className = 'text-green-300';
+            responseElement.innerHTML = output;
+            terminalOutput.appendChild(responseElement);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        });
+    }
+
+    // Add event listener for SECURITY button in Quick Access
+    const securityBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('SECURITY'));
+    if (securityBtn) {
+        securityBtn.addEventListener('click', () => {
+            let output = '<span class="text-green-400">SECURITY & ANONYMITY INFORMATION:</span><br>';
+            output += 'Site uses HTTPS for secure communication.<br>';
+            output += 'Your IP address is not stored by this site.<br>';
+            output += 'No personal data is collected.<br>';
+            output += 'Browser privacy features (Incognito/Private mode) are supported.<br>';
+            output += 'For maximum anonymity, use a VPN or Tor browser.<br>';
+            output += 'Cookies and trackers are not used.<br>';
+            output += 'Always verify site authenticity before entering sensitive information.<br>';
+            // Display in terminal output
+            const responseElement = document.createElement('p');
+            responseElement.className = 'text-green-300';
+            responseElement.innerHTML = output;
+            terminalOutput.appendChild(responseElement);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        });
+    }
+});
 // Terminal simulation
 const terminalInput = document.querySelector('.terminal-input input');
 const terminalOutput = document.querySelector('.terminal-output');
@@ -86,6 +288,12 @@ terminalInput.addEventListener('keydown', async function(e) {
                     -u: System update<br>
                     -r: Restart sequence`;
             }
+        } else if (mainCommand === 'halo') {
+            // H.A.L.O assistant interaction
+            let haloMsg = `<b>H.A.L.O:</b> Hello, I am your personal assistant! I can help you with math, science, and problem solving.<br>`;
+            haloMsg += `Type your question in the calculator panel, or ask for help with formulas, physics, or math concepts.<br>`;
+            haloMsg += `Examples: <br>- "E=mc^2" <br>- "What is Newton's second law?" <br>- "Graph sin(x)" <br>- "Area of a circle"`;
+            response = haloMsg;
         } else {
             switch (mainCommand) {
                 case 'help':
@@ -119,10 +327,23 @@ terminalInput.addEventListener('keydown', async function(e) {
                     - NETWORK: SECURE`;
                     break;
                 case 'scan':
-                    response = `INITIATING SECURITY SCAN...<br>
-                    SCANNING PORTS...<br>
-                    CHECKING VULNERABILITIES...<br>
-                    SCAN COMPLETE: NO THREATS DETECTED`;
+                    response = `INITIATING SITE DIAGNOSTIC...<br>`;
+                    // Simulate diagnostic checks
+                    setTimeout(() => {
+                        let diag = '';
+                        diag += 'Checking HTML structure... <span class="text-cyan-400">OK</span><br>';
+                        diag += 'Checking CSS file... <span class="text-cyan-400">OK</span><br>';
+                        diag += 'Checking JavaScript file... <span class="text-cyan-400">OK</span><br>';
+                        diag += 'Checking external resources... <span class="text-cyan-400">OK</span><br>';
+                        diag += 'Checking terminal responsiveness... <span class="text-cyan-400">OK</span><br>';
+                        diag += 'Checking security features... <span class="text-cyan-400">OK</span><br>';
+                        diag += '<b>DIAGNOSTIC COMPLETE: NO ISSUES DETECTED</b>';
+                        const responseElement = document.createElement('p');
+                        responseElement.className = 'text-green-300';
+                        responseElement.innerHTML = diag;
+                        terminalOutput.appendChild(responseElement);
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    }, 1200);
                     break;
                 case 'clear':
                     terminalOutput.innerHTML = '';
@@ -134,7 +355,10 @@ terminalInput.addEventListener('keydown', async function(e) {
                     MASKING IP: [***.***.***.***]<br>
                     OBFUSCATING URL TRAFFIC...<br>
                     CONNECTION ESTABLISHED: SECURE<br>
+                    URL MASKED FOR ANONYMITY<br>
                     WARNING: ALL REQUESTS NOW ROUTED THROUGH TOR NETWORK`;
+                    // Mask the URL in the address bar
+                    window.history.replaceState({}, '', '/connected');
                     break;
                 case 'time':
                     updateDateTime();
@@ -159,15 +383,34 @@ terminalInput.addEventListener('keydown', async function(e) {
                     response = `INITIATING UTOPIA PROTOCOL... REDIRECTING TO PARADISE...`;
                     break;
                 case 'quote':
-                    fetch('https://api.quotable.io/random?tags=technology')
-                        .then(response => response.json())
-                        .then(data => {
-                            const responseElement = document.createElement('p');
-                            responseElement.className = 'text-green-300';
-                            responseElement.innerHTML = `QUOTE: "${data.content}"<br>- ${data.author}`;
-                            terminalOutput.appendChild(responseElement);
-                            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-                        });
+                    // 50% chance for Iron Man quote, 50% for computer quote
+                    if (Math.random() < 0.5) {
+                        // Iron Man quotes
+                        const ironManQuotes = [
+                            { content: "I am Iron Man.", author: "Tony Stark" },
+                            { content: "Genius, billionaire, playboy, philanthropist.", author: "Tony Stark" },
+                            { content: "If we can't protect the Earth, you can be damn sure we'll avenge it.", author: "Tony Stark" },
+                            { content: "Sometimes you gotta run before you can walk.", author: "Tony Stark" },
+                            { content: "It's not about how much we lost, it's about how much we have left.", author: "Tony Stark" },
+                            { content: "Doth mother know you weareth her drapes?", author: "Tony Stark" }
+                        ];
+                        const q = ironManQuotes[Math.floor(Math.random() * ironManQuotes.length)];
+                        const responseElement = document.createElement('p');
+                        responseElement.className = 'text-green-300';
+                        responseElement.innerHTML = `QUOTE: "${q.content}"<br>- ${q.author}`;
+                        terminalOutput.appendChild(responseElement);
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    } else {
+                        fetch('https://api.quotable.io/random?tags=technology,computers')
+                            .then(response => response.json())
+                            .then(data => {
+                                const responseElement = document.createElement('p');
+                                responseElement.className = 'text-green-300';
+                                responseElement.innerHTML = `QUOTE: "${data.content}"<br>- ${data.author}`;
+                                terminalOutput.appendChild(responseElement);
+                                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                            });
+                    }
                     return;
                 case 'whoami':
                     response = `USER PROFILE:<br>
@@ -206,7 +449,10 @@ terminalInput.addEventListener('keydown', async function(e) {
                     UNMASKING IP...<br>
                     ROUTING DIRECTLY...<br>
                     CONNECTION NOW IN CLEARTEXT<br>
+                    URL UNMASKED<br>
                     WARNING: TRAFFIC IS NOW VISIBLE TO NETWORK MONITORS`;
+                    // Restore the original URL in the address bar
+                    window.history.replaceState({}, '', window.location.pathname.replace('/connected', '/index.html'));
                     break;
                 case 'reboot':
                     response = `INITIATING SYSTEM REBOOT...<br>

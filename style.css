@@ -1,60 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 body {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Orbitron', 'Share Tech Mono', monospace;
+    background: radial-gradient(ellipse at center, #0a1a2f 0%, #09111a 100%);
+    color: #00eaff;
     overflow-x: hidden;
 }
 
 .glitch {
     position: relative;
+    color: #00eaff;
+    text-shadow: 0 0 8px #00eaff, 0 0 24px #00eaff;
+    letter-spacing: 2px;
 }
 
-.glitch::before,
-.glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.8;
-}
-
-.glitch::before {
-    color: #0ff;
-    z-index: -1;
-    animation: glitch-effect 3s infinite;
-}
-
-.glitch::after {
-    color: #f0f;
-    z-index: -2;
-    animation: glitch-effect 2s infinite reverse;
-}
-
-@keyframes glitch-effect {
-    0% {
-        transform: translate(0);
-    }
-    20% {
-        transform: translate(-3px, 3px);
-    }
-    40% {
-        transform: translate(-3px, -3px);
-    }
-    60% {
-        transform: translate(3px, 3px);
-    }
-    80% {
-        transform: translate(3px, -3px);
-    }
-    100% {
-        transform: translate(0);
-    }
+.jarvis-glow {
+    box-shadow: 0 0 24px 4px #00eaff44, 0 0 8px 2px #00eaff;
+    border: 1px solid #00eaff;
+    background: rgba(10, 26, 47, 0.85);
 }
 
 .terminal-input::before {
     content: "> ";
-    color: #0f0;
+    color: #00eaff;
+    text-shadow: 0 0 8px #00eaff;
 }
 
 .scanline {
@@ -63,7 +31,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient( rgba(0, 255, 0, 0.1), rgba(0, 255, 0, 0.1) 1px, transparent 1px, transparent);
+    background: linear-gradient(rgba(0, 234, 255, 0.08), rgba(0, 234, 255, 0.08) 1px, transparent 1px, transparent);
     background-size: 100% 3px;
     animation: scanline 8s linear infinite;
     pointer-events: none;
@@ -76,4 +44,34 @@ body {
     to {
         transform: translateY(100%);
     }
+}
+
+.jarvis-btn {
+    background: linear-gradient(90deg, #0a1a2f 60%, #00eaff 100%);
+    color: #00eaff;
+    border: 1px solid #00eaff;
+    box-shadow: 0 0 12px 2px #00eaff44;
+    transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.jarvis-btn:hover {
+    background: linear-gradient(90deg, #00eaff 60%, #0a1a2f 100%);
+    color: #09111a;
+    box-shadow: 0 0 24px 4px #00eaff;
+}
+
+.jarvis-panel {
+    background: rgba(10, 26, 47, 0.85);
+    border: 1px solid #00eaff;
+    box-shadow: 0 0 24px 4px #00eaff44;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.jarvis-header {
+    color: #00eaff;
+    text-shadow: 0 0 12px #00eaff, 0 0 24px #00eaff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 3px;
 }

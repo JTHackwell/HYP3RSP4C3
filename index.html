@@ -4,42 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYP3RSP4C3 :: Mainframe</title>
+    <title>HYP3RSP4C3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg-black text-green-400 min-h-screen">
+
     <div id="vanta-bg" class="fixed inset-0 z-0 opacity-30"></div>
     <div class="scanline z-10"></div>
     <div class="container mx-auto px-4 py-8 relative z-20">
+        <!-- Embedded Browser Panel -->
+        <div class="jarvis-panel mb-8">
+            <h2 class="text-xl mb-4 jarvis-header" style="font-size:1.5rem;">Embedded Browser</h2>
+            <div class="flex gap-2 mb-2">
+                <input id="browser-url" type="text" class="bg-gray-900 text-cyan-300 px-3 py-2 rounded w-full" placeholder="Enter URL (e.g. https://example.com)">
+                <button id="browser-go" class="jarvis-btn px-3 py-1 rounded">Go</button>
+            </div>
+            <iframe id="browser-frame" src="about:blank" style="width:100%;height:400px;border-radius:8px;border:1px solid #00eaff;background:#09111a;"></iframe>
+        </div>
+        <!-- Advanced Calculator Panel -->
+        <div class="jarvis-panel mb-8">
+            <h2 class="text-xl mb-4 jarvis-header" style="font-size:1.5rem;">Advanced Calculator</h2>
+            <div class="mb-2">
+                <input id="calc-input" type="text" class="bg-gray-900 text-cyan-300 px-3 py-2 rounded w-full" placeholder="Enter math/physics expression (e.g. sin(x), E=mc^2, 2+2*3)">
+            </div>
+            <div class="flex gap-2 mb-2">
+                <button id="calc-eval" class="jarvis-btn px-3 py-1 rounded">Calculate</button>
+                <button id="calc-graph" class="jarvis-btn px-3 py-1 rounded">Graph</button>
+            </div>
+            <div id="calc-result" class="text-cyan-300 mb-2"></div>
+            <div id="calc-graph-area" style="height:300px;"></div>
+        </div>
         <!-- Header -->
         <header class="mb-12">
-            <h1 class="glitch text-4xl md:text-6xl font-bold mb-2" data-text="HYP3RSP4C3">HYP3RSP4C3</h1>
+            <h1 class="glitch jarvis-header mb-2" data-text="HYP3RSP4C3">HYP3RSP4C3</h1>
             <div class="flex items-center space-x-2 text-xs md:text-sm">
-                <span class="bg-red-500 px-2 py-1 rounded">SYSTEM ALERT</span>
-                <span>MAINFRAME ACCESS GRANTED</span>
+                <span class="px-2 py-1 rounded jarvis-btn">SYSTEM ONLINE</span>
+                <span>AI INTERFACE ACTIVE</span>
                 <span id="datetime" class="ml-auto"></span>
             </div>
         </header>
         <!-- Main Terminal -->
-        <div class="bg-black border-2 border-green-500 rounded-md p-4 mb-8">
+        <div class="jarvis-panel mb-8">
             <div class="terminal-output mb-4 h-64 overflow-y-auto">
-                <p class="text-green-300">&gt; INITIALIZING HYP3RSP4C3 TERMINAL...</p>
-                <p class="text-green-300">&gt; LOADING CRYPTIC MODULES ███████████ 100%</p>
-                <p class="text-green-300">&gt; WELCOME, USER [UNKNOWN]</p>
-                <p class="text-green-300">&gt; SYSTEM STATUS: <span class="text-green-500">SECURE</span></p>
-                <p class="text-green-300">&gt; CONNECTION: <span class="text-green-500">ENCRYPTED</span></p>
-                <p class="text-green-300">&gt; LAST LOGIN: NEVER</p>
-                <p class="text-green-300">&gt; TYPE 'HELP' FOR COMMANDS</p>
-                <p class="text-green-300">&gt;</p>
+                <p class="text-cyan-300">&gt; INITIALIZING JARVIS INTERFACE...</p>
+                <p class="text-cyan-300">&gt; SYSTEMS NOMINAL ███████████ 100%</p>
+                <p class="text-cyan-300">&gt; WELCOME, TONY STARK</p>
+                <p class="text-cyan-300">&gt; STATUS: <span class="text-cyan-400">ONLINE</span></p>
+                <p class="text-cyan-300">&gt; CONNECTION: <span class="text-cyan-400">SECURE</span></p>
+                <p class="text-cyan-300">&gt; LAST LOGIN: NOW</p>
+                <p class="text-cyan-300">&gt; TYPE 'HELP' FOR COMMANDS</p>
+                <p class="text-cyan-300">&gt;</p>
             </div>
             <div class="flex items-center terminal-input">
-                <input type="text" class="bg-transparent border-none outline-none flex-grow text-green-400" placeholder="ENTER COMMAND..." autofocus>
-                <button class="ml-2 bg-green-900 text-green-400 px-3 py-1 rounded hover:bg-green-800 transition">
+                <input type="text" class="bg-transparent border-none outline-none flex-grow text-cyan-300" placeholder="ENTER COMMAND..." autofocus>
+                <button class="ml-2 jarvis-btn px-3 py-1 rounded">
                     <i data-feather="send"></i>
                 </button>
             </div>
@@ -47,98 +72,96 @@
         <!-- Grid System -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <!-- System Status -->
-            <div class="bg-black bg-opacity-70 border border-green-500 rounded-md p-4">
-                <h2 class="text-xl mb-2 flex items-center">
+            <div class="jarvis-panel">
+                <h2 class="text-xl mb-2 flex items-center jarvis-header" style="font-size:1.5rem;">
                     <i data-feather="cpu" class="mr-2"></i> SYSTEM STATUS
                 </h2>
                 <div class="space-y-2">
                     <div>
-                        <span class="text-green-300">CPU:</span>
+                        <span class="text-cyan-300">CPU:</span>
                         <div class="w-full bg-gray-800 rounded-full h-2.5">
-                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 75%"></div>
+                            <div class="bg-cyan-400 h-2.5 rounded-full" style="width: 75%"></div>
                         </div>
                     </div>
                     <div>
-                        <span class="text-green-300">RAM:</span>
+                        <span class="text-cyan-300">RAM:</span>
                         <div class="w-full bg-gray-800 rounded-full h-2.5">
-                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 60%"></div>
+                            <div class="bg-cyan-400 h-2.5 rounded-full" style="width: 60%"></div>
                         </div>
                     </div>
                     <div>
-                        <span class="text-green-300">STORAGE:</span>
+                        <span class="text-cyan-300">STORAGE:</span>
                         <div class="w-full bg-gray-800 rounded-full h-2.5">
-                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 45%"></div>
+                            <div class="bg-cyan-400 h-2.5 rounded-full" style="width: 45%"></div>
                         </div>
                     </div>
                     <div class="pt-2">
-                        <span class="text-green-300">NETWORK: <span class="text-green-500">ACTIVE</span></span>
+                        <span class="text-cyan-300">NETWORK: <span class="text-cyan-400">ACTIVE</span></span>
                     </div>
                 </div>
             </div>
             <!-- Recent Activity -->
-            <div class="bg-black bg-opacity-70 border border-green-500 rounded-md p-4">
-                <h2 class="text-xl mb-2 flex items-center">
+            <div class="jarvis-panel">
+                <h2 class="text-xl mb-2 flex items-center jarvis-header" style="font-size:1.5rem;">
                     <i data-feather="activity" class="mr-2"></i> RECENT ACTIVITY
                 </h2>
                 <ul class="space-y-2 text-sm">
                     <li class="flex items-center">
-                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span class="text-cyan-400 mr-2">&gt;</span>
                         <span>NEW CONNECTION ESTABLISHED</span>
                     </li>
                     <li class="flex items-center">
-                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span class="text-cyan-400 mr-2">&gt;</span>
                         <span>FIREWALL UPDATED [v4.2.0]</span>
                     </li>
                     <li class="flex items-center">
-                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span class="text-cyan-400 mr-2">&gt;</span>
                         <span>3 NEW THREATS NEUTRALIZED</span>
                     </li>
                     <li class="flex items-center">
-                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span class="text-cyan-400 mr-2">&gt;</span>
                         <span>DATA ENCRYPTION ACTIVE</span>
                     </li>
                     <li class="flex items-center">
-                        <span class="text-green-500 mr-2">&gt;</span>
+                        <span class="text-cyan-400 mr-2">&gt;</span>
                         <span>SYSTEM SCAN COMPLETE</span>
                     </li>
                 </ul>
             </div>
             <!-- Quick Access -->
-            <div class="bg-black bg-opacity-70 border border-green-500 rounded-md p-4">
-                <h2 class="text-xl mb-2 flex items-center">
+            <div class="jarvis-panel">
+                <h2 class="text-xl mb-2 flex items-center jarvis-header" style="font-size:1.5rem;">
                     <i data-feather="zap" class="mr-2"></i> QUICK ACCESS
                 </h2>
                 <div class="grid grid-cols-3 gap-2">
-                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
+                    <button class="jarvis-btn p-2 rounded flex items-center justify-center">
                         <i data-feather="lock" class="mr-1"></i> SECURITY
                     </button>
-                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
-                        <i data-feather="database" class="mr-1"></i> DATA
-                    </button>
-                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
+                    <button class="jarvis-btn p-2 rounded flex items-center justify-center">
                         <i data-feather="wifi" class="mr-1"></i> NETWORK
                     </button>
-                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition" onclick="window.open('https://algebraicformulas-15007560.codehs.me/', '_blank')">
+                    <button class="jarvis-btn p-2 rounded flex items-center justify-center" onclick="window.open('https://algebraicformulas-15007560.codehs.me/', '_blank')">
                         <i data-feather="divide-square" class="mr-1"></i> GN-MATH
                     </button>
-                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition" onclick="window.open('https://excel.theme.ryansilvester.com/', '_blank')">
+                    <button class="jarvis-btn p-2 rounded flex items-center justify-center" onclick="window.open('https://excel.theme.ryansilvester.com/', '_blank')">
                         <i data-feather="cloud" class="mr-1"></i> UTOPIA
                     </button>
-                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition" onclick="window.open('https://quickphysics.a-quo.com/', '_blank')">
+                    <button class="jarvis-btn p-2 rounded flex items-center justify-center" onclick="window.open('https://quickphysics.a-quo.com/', '_blank')">
                         <i data-feather="moon" class="mr-1"></i> SHADOW
                     </button>
-                    <button class="bg-green-900 bg-opacity-50 hover:bg-green-800 text-green-400 p-2 rounded flex items-center justify-center transition">
+                    <button class="jarvis-btn p-2 rounded flex items-center justify-center">
                         <i data-feather="terminal" class="mr-1"></i> CMD
                     </button>
                 </div>
             </div>
         </div>
         <!-- Footer -->
-        <footer class="text-xs text-green-700 text-center">
-            <p>WARNING: UNAUTHORIZED ACCESS TO THIS SYSTEM IS PROHIBITED</p>
+        <footer class="text-xs text-cyan-400 text-center">
+            <p>JARVIS AI SYSTEM :: PROPERTY OF STARK INDUSTRIES</p>
             <p class="mt-1">ALL ACTIVITIES ARE MONITORED AND LOGGED</p>
         </footer>
     </div>
+    <script src="calculator.js"></script>
     <script src="script.js"></script>
 </body>
 
