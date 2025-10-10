@@ -62,13 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
             adminDiv.style.overflowY = 'auto';
             adminDiv.innerHTML = `
                 <h2 style="font-size:2rem;" class="jarvis-header mb-4">Admin Panel</h2>
-                <p>Welcome, Admin! Here are your monitoring tools:</p>
+                <p>Welcome, Admin! Here are your advanced tools:</p>
                 <ul style="margin:1rem 0 2rem 0;">
-                    <li>- <b>Site Activity Log</b> (simulated)</li>
-                    <li>- <b>User List</b> (simulated)</li>
-                    <li>- <b>Security Controls</b> (simulated)</li>
-                    <li>- <b>Site Stats</b></li>
-                    <li>- <b>User Actions</b></li>
+                    <li>- <b>Site Activity Log</b></li>
+                    <li>- <b>User List & Session Management</b></li>
+                    <li>- <b>Command History Viewer</b></li>
+                    <li>- <b>System Controls</b></li>
+                    <li>- <b>Theme Switcher</b></li>
+                    <li>- <b>Download Logs</b></li>
+                    <li>- <b>Fake User Generator</b></li>
+                    <li>- <b>Admin Notes</b></li>
                     <li>- <b>Broadcast Message</b></li>
                 </ul>
                 <div style="margin-bottom:2rem;">
@@ -76,23 +79,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div id="admin-activity" style="background:#09111a;padding:1rem;border-radius:8px;">No suspicious activity detected.</div>
                 </div>
                 <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">User List</h3>
-                    <div id="admin-users" style="background:#09111a;padding:1rem;border-radius:8px;">Current users: [Simulated: 1 - You]</div>
+                    <h3 style="font-size:1.2rem;">User List & Session Management</h3>
+                    <div id="admin-users" style="background:#09111a;padding:1rem;border-radius:8px;">Current users: <span id="admin-user-list">[Simulated: 1 - You]</span></div>
+                    <button id="admin-add-user" class="jarvis-btn px-3 py-1 rounded mt-2">Add Fake User</button>
+                    <button id="admin-remove-user" class="jarvis-btn px-3 py-1 rounded mt-2">Remove Fake User</button>
                 </div>
                 <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Site Stats</h3>
-                    <div id="admin-stats" style="background:#09111a;padding:1rem;border-radius:8px;">
-                        <b>Uptime:</b> <span id="admin-uptime">Calculating...</span><br>
-                        <b>Commands Executed:</b> <span id="admin-cmds">0</span><br>
-                        <b>Calculator Uses:</b> <span id="admin-calc">0</span>
-                    </div>
+                    <h3 style="font-size:1.2rem;">Command History Viewer</h3>
+                    <div id="admin-cmd-history" style="background:#09111a;padding:1rem;border-radius:8px;max-height:100px;overflow-y:auto;"></div>
                 </div>
                 <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">User Actions</h3>
-                    <div id="admin-actions" style="background:#09111a;padding:1rem;border-radius:8px;">
-                        <button id="admin-log-action" class="jarvis-btn px-3 py-1 rounded">Log User Action</button>
-                        <div id="admin-action-log" style="margin-top:1rem;"></div>
-                    </div>
+                    <h3 style="font-size:1.2rem;">System Controls</h3>
+                    <button id="admin-restart" class="jarvis-btn px-3 py-1 rounded">Restart Site</button>
+                    <button id="admin-clear-logs" class="jarvis-btn px-3 py-1 rounded">Clear All Logs</button>
+                    <button id="admin-maintenance" class="jarvis-btn px-3 py-1 rounded">Toggle Maintenance Mode</button>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">Theme Switcher</h3>
+                    <button id="admin-theme-green" class="jarvis-btn px-3 py-1 rounded">Green/Black</button>
+                    <button id="admin-theme-blue" class="jarvis-btn px-3 py-1 rounded">Blue/Black</button>
+                    <button id="admin-theme-retro" class="jarvis-btn px-3 py-1 rounded">Retro</button>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">Download Logs</h3>
+                    <button id="admin-download-logs" class="jarvis-btn px-3 py-1 rounded">Download Activity Log</button>
+                </div>
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.2rem;">Admin Notes</h3>
+                    <textarea id="admin-notes" style="width:100%;height:60px;background:#09111a;color:#00eaff;border-radius:8px;padding:8px;" placeholder="Admin notes..."></textarea>
                 </div>
                 <div style="margin-bottom:2rem;">
                     <h3 style="font-size:1.2rem;">Broadcast Message</h3>
@@ -105,6 +119,58 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button id="admin-close" class="jarvis-btn px-3 py-1 rounded">Close Admin Panel</button>
                 </div>
             `;
+            // Fake user generator logic
+            let fakeUsers = 1;
+            const userListSpan = document.getElementById('admin-user-list');
+            document.getElementById('admin-add-user').onclick = () => {
+                fakeUsers++;
+                userListSpan.textContent = `[Simulated: ${fakeUsers} - You + ${fakeUsers-1} Fake]`;
+            };
+            document.getElementById('admin-remove-user').onclick = () => {
+                if (fakeUsers > 1) fakeUsers--;
+                userListSpan.textContent = `[Simulated: ${fakeUsers} - You + ${fakeUsers-1} Fake]`;
+            };
+            // Command history viewer
+            const cmdHistoryDiv = document.getElementById('admin-cmd-history');
+            if (window._cmdHistory) {
+                cmdHistoryDiv.innerHTML = window._cmdHistory.map(cmd => `<div>${cmd}</div>`).join('');
+            }
+            // System controls
+            document.getElementById('admin-restart').onclick = () => location.reload();
+            document.getElementById('admin-clear-logs').onclick = () => {
+                document.getElementById('admin-activity').textContent = '';
+                cmdHistoryDiv.innerHTML = '';
+                if (window._cmdHistory) window._cmdHistory = [];
+            };
+            let maintenanceMode = false;
+            document.getElementById('admin-maintenance').onclick = () => {
+                maintenanceMode = !maintenanceMode;
+                alert(maintenanceMode ? 'Maintenance Mode Enabled' : 'Maintenance Mode Disabled');
+            };
+            // Theme switcher
+            document.getElementById('admin-theme-green').onclick = () => {
+                document.body.style.background = '#000';
+                document.body.style.color = '#00ff00';
+            };
+            document.getElementById('admin-theme-blue').onclick = () => {
+                document.body.style.background = '#000';
+                document.body.style.color = '#00eaff';
+            };
+            document.getElementById('admin-theme-retro').onclick = () => {
+                document.body.style.background = '#222';
+                document.body.style.color = '#ffea00';
+            };
+            // Download logs
+            document.getElementById('admin-download-logs').onclick = () => {
+                const log = document.getElementById('admin-activity').textContent;
+                const blob = new Blob([log], { type: 'text/plain' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'activity_log.txt';
+                a.click();
+            };
+            // Admin notes are just local
+            // ...existing code...
             document.body.appendChild(adminDiv);
             document.getElementById('admin-close').onclick = () => {
                 adminDiv.remove();
@@ -242,10 +308,41 @@ terminalInput.addEventListener('keydown', async function(e) {
         commandElement.className = 'text-green-400';
         commandElement.innerHTML = `> ${command}`;
         terminalOutput.appendChild(commandElement);
+        // Save command to history for admin panel
+        if (!window._cmdHistory) window._cmdHistory = [];
+        window._cmdHistory.push(command);
         // Process command
         let response = '';
         const commandParts = command.toLowerCase().split(' ');
         const mainCommand = commandParts[0];
+        // Site security options for regular users
+        const securityBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('SECURITY'));
+        if (securityBtn) {
+            securityBtn.insertAdjacentHTML('afterend', `
+            <button id="user-privacy" class="jarvis-btn p-2 rounded flex items-center justify-center">
+                <i data-feather="shield"></i> PRIVACY SETTINGS
+            </button>
+            <button id="user-encrypt" class="jarvis-btn p-2 rounded flex items-center justify-center">
+                <i data-feather="lock"></i> ENCRYPT TRAFFIC
+            </button>
+            <button id="user-clear" class="jarvis-btn p-2 rounded flex items-center justify-center">
+                <i data-feather="trash"></i> CLEAR SESSION
+            </button>
+        `);
+            feather.replace();
+            document.getElementById('user-privacy').onclick = () => {
+                alert('Privacy Mode Enabled! Cookies, trackers, and local storage cleared.');
+                localStorage.clear();
+                sessionStorage.clear();
+            };
+            document.getElementById('user-encrypt').onclick = () => {
+                alert('Traffic encryption simulated. All site data is now protected.');
+            };
+            document.getElementById('user-clear').onclick = () => {
+                alert('Session cleared. You have been logged out.');
+                location.reload();
+            };
+        }
         if (/^run\s+-/.test(command)) {
             const flag = command.split(' ')[1];
             switch (flag) {

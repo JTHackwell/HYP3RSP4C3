@@ -2,6 +2,45 @@
 <html lang="en">
 
 <head>
+    <style>
+        body {
+            background: #000;
+            color: #00ff00;
+        }
+        
+        .jarvis-panel,
+        .terminal-output,
+        .terminal-input,
+        header,
+        footer {
+            background: #000 !important;
+            color: #00ff00 !important;
+            border-color: #00ff00 !important;
+        }
+        
+        .jarvis-btn,
+        .px-3,
+        .py-1,
+        .rounded {
+            background: #000 !important;
+            color: #00ff00 !important;
+            border: 1px solid #00ff00 !important;
+        }
+        
+        .text-cyan-300,
+        .text-cyan-400 {
+            color: #00ff00 !important;
+        }
+        
+        .bg-gray-900,
+        .bg-gray-800 {
+            background: #000 !important;
+        }
+        
+        .scanline {
+            background: repeating-linear-gradient(0deg, rgba(0, 255, 0, 0.05) 0px, rgba(0, 255, 0, 0.05) 1px, transparent 2px, transparent 4px);
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HYP3RSP4C3</title>
@@ -16,6 +55,7 @@
 
 <body class="bg-black text-green-400 min-h-screen">
 
+    <div class="crt"></div>
     <div id="vanta-bg" class="fixed inset-0 z-0 opacity-30"></div>
     <div class="scanline z-10"></div>
     <div class="container mx-auto px-4 py-8 relative z-20">
