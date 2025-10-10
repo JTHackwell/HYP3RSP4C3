@@ -288,9 +288,6 @@ terminalInput.addEventListener('keydown', async function(e) {
                     -u: System update<br>
                     -r: Restart sequence`;
             }
-        } else if (mainCommand === 'search') {
-            window.location.href = 'HYP3RSP4C3-BROWSER/browser.html';
-            response = `Redirecting to HYP3RSP4C3 Browser...`;
         } else if (mainCommand === 'halo') {
             // H.A.L.O assistant interaction
             let haloMsg = `<b>H.A.L.O:</b> Hello, I am your personal assistant! I can help you with math, science, and problem solving.<br>`;
