@@ -44,169 +44,221 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Admin panel function
-    function showAdminPanel() {
-        // Create admin panel overlay
-        let adminDiv = document.getElementById('admin-panel');
-        if (!adminDiv) {
-            adminDiv = document.createElement('div');
-            adminDiv.id = 'admin-panel';
-            adminDiv.style.position = 'fixed';
-            adminDiv.style.top = '0';
-            adminDiv.style.left = '0';
-            adminDiv.style.width = '100vw';
-            adminDiv.style.height = '100vh';
-            adminDiv.style.background = 'rgba(10,26,47,0.98)';
-            adminDiv.style.zIndex = '9999';
-            adminDiv.style.color = '#00eaff';
-            adminDiv.style.padding = '40px';
-            adminDiv.style.overflowY = 'auto';
-            adminDiv.innerHTML = `
-                <h2 style="font-size:2rem;" class="jarvis-header mb-4">Admin Panel</h2>
-                <p>Welcome, Admin! Here are your advanced tools:</p>
-                <ul style="margin:1rem 0 2rem 0;">
-                    <li>- <b>Site Activity Log</b></li>
-                    <li>- <b>User List & Session Management</b></li>
-                    <li>- <b>Command History Viewer</b></li>
-                    <li>- <b>System Controls</b></li>
-                    <li>- <b>Theme Switcher</b></li>
-                    <li>- <b>Download Logs</b></li>
-                    <li>- <b>Fake User Generator</b></li>
-                    <li>- <b>Admin Notes</b></li>
-                    <li>- <b>Broadcast Message</b></li>
-                </ul>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Site Activity Log</h3>
-                    <div id="admin-activity" style="background:#09111a;padding:1rem;border-radius:8px;">No suspicious activity detected.</div>
+    window.showAdminPanel = function showAdminPanel() {
+            // Create admin panel window
+            let adminDiv = document.getElementById('admin-panel');
+            if (!adminDiv) {
+                adminDiv = document.createElement('div');
+                adminDiv.id = 'admin-panel';
+                adminDiv.style.position = 'fixed';
+                adminDiv.style.top = '100px';
+                adminDiv.style.left = '100px';
+                adminDiv.style.width = '700px';
+                adminDiv.style.height = '600px';
+                adminDiv.style.background = 'rgba(10,26,47,0.98)';
+                adminDiv.style.zIndex = '9999';
+                adminDiv.style.color = '#00eaff';
+                adminDiv.style.borderRadius = '12px';
+                adminDiv.style.boxShadow = '0 8px 32px #000a';
+                adminDiv.style.overflow = 'hidden';
+                adminDiv.innerHTML = `
+                <div id="admin-header" style="cursor:move;background:#09111a;padding:10px 16px;border-top-left-radius:12px;border-top-right-radius:12px;display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:1.5rem;font-weight:bold;">Admin Panel</span>
+                    <div>
+                        <button id="admin-fullscreen" style="margin-right:8px;" title="Fullscreen">🗖</button>
+                        <button id="admin-close" title="Close">✖</button>
+                    </div>
                 </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">User List & Session Management</h3>
-                    <div id="admin-users" style="background:#09111a;padding:1rem;border-radius:8px;">Current users: <span id="admin-user-list">[Simulated: 1 - You]</span></div>
-                    <button id="admin-add-user" class="jarvis-btn px-3 py-1 rounded mt-2">Add Fake User</button>
-                    <button id="admin-remove-user" class="jarvis-btn px-3 py-1 rounded mt-2">Remove Fake User</button>
-                </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Command History Viewer</h3>
-                    <div id="admin-cmd-history" style="background:#09111a;padding:1rem;border-radius:8px;max-height:100px;overflow-y:auto;"></div>
-                </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">System Controls</h3>
-                    <button id="admin-restart" class="jarvis-btn px-3 py-1 rounded">Restart Site</button>
-                    <button id="admin-clear-logs" class="jarvis-btn px-3 py-1 rounded">Clear All Logs</button>
-                    <button id="admin-maintenance" class="jarvis-btn px-3 py-1 rounded">Toggle Maintenance Mode</button>
-                </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Theme Switcher</h3>
-                    <button id="admin-theme-green" class="jarvis-btn px-3 py-1 rounded">Green/Black</button>
-                    <button id="admin-theme-blue" class="jarvis-btn px-3 py-1 rounded">Blue/Black</button>
-                    <button id="admin-theme-retro" class="jarvis-btn px-3 py-1 rounded">Retro</button>
-                </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Download Logs</h3>
-                    <button id="admin-download-logs" class="jarvis-btn px-3 py-1 rounded">Download Activity Log</button>
-                </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Admin Notes</h3>
-                    <textarea id="admin-notes" style="width:100%;height:60px;background:#09111a;color:#00eaff;border-radius:8px;padding:8px;" placeholder="Admin notes..."></textarea>
-                </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Broadcast Message</h3>
-                    <input id="admin-broadcast-input" type="text" class="bg-gray-900 text-cyan-300 px-3 py-2 rounded w-full" placeholder="Enter message to broadcast">
-                    <button id="admin-broadcast-btn" class="jarvis-btn px-3 py-1 rounded mt-2">Send Broadcast</button>
-                    <div id="admin-broadcast-log" style="margin-top:1rem;"></div>
-                </div>
-                <div style="margin-bottom:2rem;">
-                    <h3 style="font-size:1.2rem;">Security Controls</h3>
-                    <button id="admin-close" class="jarvis-btn px-3 py-1 rounded">Close Admin Panel</button>
+                <div id="admin-content" style="height:calc(100% - 48px);overflow-y:auto;padding:24px;">
+                    <p>Welcome, Admin! Here are your advanced tools:</p>
+                    <ul style="margin:1rem 0 2rem 0;">
+                        <li>- <b>Site Activity Log</b></li>
+                        <li>- <b>User List & Session Management</b></li>
+                        <li>- <b>Command History Viewer</b></li>
+                        <li>- <b>System Controls</b></li>
+                        <li>- <b>Theme Switcher</b></li>
+                        <li>- <b>Download Logs</b></li>
+                        <li>- <b>Fake User Generator</b></li>
+                        <li>- <b>Admin Notes</b></li>
+                        <li>- <b>Broadcast Message</b></li>
+                    </ul>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">Site Activity Log</h3>
+                        <div id="admin-activity" style="background:#09111a;padding:1rem;border-radius:8px;">No suspicious activity detected.</div>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">User List & Session Management</h3>
+                        <div id="admin-users" style="background:#09111a;padding:1rem;border-radius:8px;">Current users: <span id="admin-user-list">[Simulated: 1 - You]</span></div>
+                        <button id="admin-add-user" class="jarvis-btn px-3 py-1 rounded mt-2">Add Fake User</button>
+                        <button id="admin-remove-user" class="jarvis-btn px-3 py-1 rounded mt-2">Remove Fake User</button>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">Command History Viewer</h3>
+                        <div id="admin-cmd-history" style="background:#09111a;padding:1rem;border-radius:8px;max-height:100px;overflow-y:auto;"></div>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">System Controls</h3>
+                        <button id="admin-restart" class="jarvis-btn px-3 py-1 rounded">Restart Site</button>
+                        <button id="admin-clear-logs" class="jarvis-btn px-3 py-1 rounded">Clear All Logs</button>
+                        <button id="admin-maintenance" class="jarvis-btn px-3 py-1 rounded">Toggle Maintenance Mode</button>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">Theme Switcher</h3>
+                        <button id="admin-theme-green" class="jarvis-btn px-3 py-1 rounded">Green/Black</button>
+                        <button id="admin-theme-blue" class="jarvis-btn px-3 py-1 rounded">Blue/Black</button>
+                        <button id="admin-theme-retro" class="jarvis-btn px-3 py-1 rounded">Retro</button>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">Download Logs</h3>
+                        <button id="admin-download-logs" class="jarvis-btn px-3 py-1 rounded">Download Activity Log</button>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">Admin Notes</h3>
+                        <textarea id="admin-notes" style="width:100%;height:60px;background:#09111a;color:#00eaff;border-radius:8px;padding:8px;" placeholder="Admin notes..."></textarea>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">Broadcast Message</h3>
+                        <input id="admin-broadcast-input" type="text" class="bg-gray-900 text-cyan-300 px-3 py-2 rounded w-full" placeholder="Enter message to broadcast">
+                        <button id="admin-broadcast-btn" class="jarvis-btn px-3 py-1 rounded mt-2">Send Broadcast</button>
+                        <div id="admin-broadcast-log" style="margin-top:1rem;"></div>
+                    </div>
+                    <div style="margin-bottom:2rem;">
+                        <h3 style="font-size:1.2rem;">Security Controls</h3>
+                    </div>
                 </div>
             `;
-            // Fake user generator logic
-            let fakeUsers = 1;
-            const userListSpan = document.getElementById('admin-user-list');
-            document.getElementById('admin-add-user').onclick = () => {
-                fakeUsers++;
-                userListSpan.textContent = `[Simulated: ${fakeUsers} - You + ${fakeUsers-1} Fake]`;
-            };
-            document.getElementById('admin-remove-user').onclick = () => {
-                if (fakeUsers > 1) fakeUsers--;
-                userListSpan.textContent = `[Simulated: ${fakeUsers} - You + ${fakeUsers-1} Fake]`;
-            };
-            // Command history viewer
-            const cmdHistoryDiv = document.getElementById('admin-cmd-history');
-            if (window._cmdHistory) {
-                cmdHistoryDiv.innerHTML = window._cmdHistory.map(cmd => `<div>${cmd}</div>`).join('');
-            }
-            // System controls
-            document.getElementById('admin-restart').onclick = () => location.reload();
-            document.getElementById('admin-clear-logs').onclick = () => {
-                document.getElementById('admin-activity').textContent = '';
-                cmdHistoryDiv.innerHTML = '';
-                if (window._cmdHistory) window._cmdHistory = [];
-            };
-            let maintenanceMode = false;
-            document.getElementById('admin-maintenance').onclick = () => {
-                maintenanceMode = !maintenanceMode;
-                alert(maintenanceMode ? 'Maintenance Mode Enabled' : 'Maintenance Mode Disabled');
-            };
-            // Theme switcher
-            document.getElementById('admin-theme-green').onclick = () => {
-                document.body.style.background = '#000';
-                document.body.style.color = '#00ff00';
-            };
-            document.getElementById('admin-theme-blue').onclick = () => {
-                document.body.style.background = '#000';
-                document.body.style.color = '#00eaff';
-            };
-            document.getElementById('admin-theme-retro').onclick = () => {
-                document.body.style.background = '#222';
-                document.body.style.color = '#ffea00';
-            };
-            // Download logs
-            document.getElementById('admin-download-logs').onclick = () => {
-                const log = document.getElementById('admin-activity').textContent;
-                const blob = new Blob([log], { type: 'text/plain' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'activity_log.txt';
-                a.click();
-            };
-            // Admin notes are just local
-            // ...existing code...
-            document.body.appendChild(adminDiv);
-            document.getElementById('admin-close').onclick = () => {
-                adminDiv.remove();
-            };
-            // Uptime
-            const startTime = window._adminStartTime || (window._adminStartTime = Date.now());
-
-            function updateUptime() {
-                const now = Date.now();
-                const diff = Math.floor((now - startTime) / 1000);
-                const mins = Math.floor(diff / 60);
-                const secs = diff % 60;
-                document.getElementById('admin-uptime').textContent = `${mins}m ${secs}s`;
-            }
-            updateUptime();
-            setInterval(updateUptime, 1000);
-            // Command and calculator counters
-            document.getElementById('admin-cmds').textContent = window._adminCmds || '0';
-            document.getElementById('admin-calc').textContent = window._adminCalc || '0';
-            // User Actions
-            const actionLog = document.getElementById('admin-action-log');
-            document.getElementById('admin-log-action').onclick = () => {
-                const entry = `User performed an action at ${new Date().toLocaleTimeString()}`;
-                actionLog.innerHTML += `<div>${entry}</div>`;
-            };
-            // Broadcast Message
-            document.getElementById('admin-broadcast-btn').onclick = () => {
-                const msg = document.getElementById('admin-broadcast-input').value;
-                if (msg) {
-                    document.getElementById('admin-broadcast-log').innerHTML += `<div><b>Broadcast:</b> ${msg}</div>`;
-                    document.getElementById('admin-broadcast-input').value = '';
+                // Drag logic
+                let isDragging = false,
+                    dragOffsetX = 0,
+                    dragOffsetY = 0;
+                const header = adminDiv.querySelector('#admin-header');
+                header.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    dragOffsetX = e.clientX - adminDiv.offsetLeft;
+                    dragOffsetY = e.clientY - adminDiv.offsetTop;
+                    document.body.style.userSelect = 'none';
+                });
+                document.addEventListener('mousemove', function(e) {
+                    if (isDragging) {
+                        adminDiv.style.left = (e.clientX - dragOffsetX) + 'px';
+                        adminDiv.style.top = (e.clientY - dragOffsetY) + 'px';
+                    }
+                });
+                document.addEventListener('mouseup', function() {
+                    isDragging = false;
+                    document.body.style.userSelect = '';
+                });
+                // Fullscreen logic
+                let isFullscreen = false;
+                adminDiv.querySelector('#admin-fullscreen').onclick = function() {
+                    if (!isFullscreen) {
+                        adminDiv.style.top = '0';
+                        adminDiv.style.left = '0';
+                        adminDiv.style.width = '100vw';
+                        adminDiv.style.height = '100vh';
+                        adminDiv.style.borderRadius = '0';
+                        isFullscreen = true;
+                    } else {
+                        adminDiv.style.top = '100px';
+                        adminDiv.style.left = '100px';
+                        adminDiv.style.width = '700px';
+                        adminDiv.style.height = '600px';
+                        adminDiv.style.borderRadius = '12px';
+                        isFullscreen = false;
+                    }
+                };
+                // Close logic
+                adminDiv.querySelector('#admin-close').onclick = function() {
+                    adminDiv.remove();
+                };
+                // Fake user generator logic
+                let fakeUsers = 1;
+                const userListSpan = document.getElementById('admin-user-list');
+                document.getElementById('admin-add-user').onclick = () => {
+                    fakeUsers++;
+                    userListSpan.textContent = `[Simulated: ${fakeUsers} - You + ${fakeUsers-1} Fake]`;
+                };
+                document.getElementById('admin-remove-user').onclick = () => {
+                    if (fakeUsers > 1) fakeUsers--;
+                    userListSpan.textContent = `[Simulated: ${fakeUsers} - You + ${fakeUsers-1} Fake]`;
+                };
+                // Command history viewer
+                const cmdHistoryDiv = document.getElementById('admin-cmd-history');
+                if (window._cmdHistory) {
+                    cmdHistoryDiv.innerHTML = window._cmdHistory.map(cmd => `<div>${cmd}</div>`).join('');
                 }
-            };
+                // System controls
+                document.getElementById('admin-restart').onclick = () => location.reload();
+                document.getElementById('admin-clear-logs').onclick = () => {
+                    document.getElementById('admin-activity').textContent = '';
+                    cmdHistoryDiv.innerHTML = '';
+                    if (window._cmdHistory) window._cmdHistory = [];
+                };
+                let maintenanceMode = false;
+                document.getElementById('admin-maintenance').onclick = () => {
+                    maintenanceMode = !maintenanceMode;
+                    alert(maintenanceMode ? 'Maintenance Mode Enabled' : 'Maintenance Mode Disabled');
+                };
+                // Theme switcher
+                document.getElementById('admin-theme-green').onclick = () => {
+                    document.body.style.background = '#000';
+                    document.body.style.color = '#00ff00';
+                };
+                document.getElementById('admin-theme-blue').onclick = () => {
+                    document.body.style.background = '#000';
+                    document.body.style.color = '#00eaff';
+                };
+                document.getElementById('admin-theme-retro').onclick = () => {
+                    document.body.style.background = '#222';
+                    document.body.style.color = '#ffea00';
+                };
+                // Download logs
+                document.getElementById('admin-download-logs').onclick = () => {
+                    const log = document.getElementById('admin-activity').textContent;
+                    const blob = new Blob([log], { type: 'text/plain' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'activity_log.txt';
+                    a.click();
+                };
+                // Admin notes are just local
+                // ...existing code...
+                document.body.appendChild(adminDiv);
+                document.getElementById('admin-close').onclick = () => {
+                    adminDiv.remove();
+                };
+                // Uptime
+                const startTime = window._adminStartTime || (window._adminStartTime = Date.now());
+
+                function updateUptime() {
+                    const now = Date.now();
+                    const diff = Math.floor((now - startTime) / 1000);
+                    const mins = Math.floor(diff / 60);
+                    const secs = diff % 60;
+                    document.getElementById('admin-uptime').textContent = `${mins}m ${secs}s`;
+                }
+                updateUptime();
+                setInterval(updateUptime, 1000);
+                // Command and calculator counters
+                document.getElementById('admin-cmds').textContent = window._adminCmds || '0';
+                document.getElementById('admin-calc').textContent = window._adminCalc || '0';
+                // User Actions
+                const actionLog = document.getElementById('admin-action-log');
+                document.getElementById('admin-log-action').onclick = () => {
+                    const entry = `User performed an action at ${new Date().toLocaleTimeString()}`;
+                    actionLog.innerHTML += `<div>${entry}</div>`;
+                };
+                // Broadcast Message
+                document.getElementById('admin-broadcast-btn').onclick = () => {
+                    const msg = document.getElementById('admin-broadcast-input').value;
+                    if (msg) {
+                        document.getElementById('admin-broadcast-log').innerHTML += `<div><b>Broadcast:</b> ${msg}</div>`;
+                        document.getElementById('admin-broadcast-input').value = '';
+                    }
+                };
+            }
         }
-    }
-    // Embedded browser panel logic
+        // Embedded browser panel logic
     const browserUrl = document.getElementById('browser-url');
     const browserGo = document.getElementById('browser-go');
     const browserFrame = document.getElementById('browser-frame');
@@ -315,34 +367,7 @@ terminalInput.addEventListener('keydown', async function(e) {
         let response = '';
         const commandParts = command.toLowerCase().split(' ');
         const mainCommand = commandParts[0];
-        // Site security options for regular users
-        const securityBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('SECURITY'));
-        if (securityBtn) {
-            securityBtn.insertAdjacentHTML('afterend', `
-            <button id="user-privacy" class="jarvis-btn p-2 rounded flex items-center justify-center">
-                <i data-feather="shield"></i> PRIVACY SETTINGS
-            </button>
-            <button id="user-encrypt" class="jarvis-btn p-2 rounded flex items-center justify-center">
-                <i data-feather="lock"></i> ENCRYPT TRAFFIC
-            </button>
-            <button id="user-clear" class="jarvis-btn p-2 rounded flex items-center justify-center">
-                <i data-feather="trash"></i> CLEAR SESSION
-            </button>
-        `);
-            feather.replace();
-            document.getElementById('user-privacy').onclick = () => {
-                alert('Privacy Mode Enabled! Cookies, trackers, and local storage cleared.');
-                localStorage.clear();
-                sessionStorage.clear();
-            };
-            document.getElementById('user-encrypt').onclick = () => {
-                alert('Traffic encryption simulated. All site data is now protected.');
-            };
-            document.getElementById('user-clear').onclick = () => {
-                alert('Session cleared. You have been logged out.');
-                location.reload();
-            };
-        }
+        // ...existing code...
         if (/^run\s+-/.test(command)) {
             const flag = command.split(' ')[1];
             switch (flag) {
