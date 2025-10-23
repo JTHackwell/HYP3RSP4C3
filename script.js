@@ -30,8 +30,135 @@ updateDateTime();
 
 // Feather icons
 feather.replace();
+
+// DeepSeek AI Configuration
+const DEEPSEEK_API_KEY = 'sk-10b9a5a1b6ec4d06a4f04584330b031f';
+const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+
+// DeepSeek AI functionality
+function initializeDeepSeek() {
+    const deepseekInput = document.getElementById('deepseek-input');
+    const deepseekSend = document.getElementById('deepseek-send');
+    const deepseekClear = document.getElementById('deepseek-clear');
+    const deepseekConversation = document.getElementById('deepseek-conversation');
+    const deepseekStatus = document.getElementById('deepseek-status');
+    const deepseekAccess = document.getElementById('deepseek-access');
+
+    // Scroll to DeepSeek section when AI button is clicked
+    if (deepseekAccess) {
+        deepseekAccess.addEventListener('click', () => {
+            document.querySelector('.jarvis-panel:nth-child(2)').scrollIntoView({
+                behavior: 'smooth'
+            });
+            deepseekInput.focus();
+        });
+    }
+
+    // Send message to DeepSeek
+    async function sendToDeepSeek(message) {
+        try {
+            deepseekStatus.textContent = 'Thinking...';
+
+            const response = await fetch(DEEPSEEK_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: [{
+                            role: 'system',
+                            content: 'You are a helpful AI assistant integrated into the HYP3RSP4C3 system. Provide clear, concise, and helpful responses.'
+                        },
+                        {
+                            role: 'user',
+                            content: message
+                        }
+                    ],
+                    max_tokens: 1000,
+                    temperature: 0.7
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const aiResponse = data.choices[0].message.content;
+
+            // Add user message to conversation
+            const userDiv = document.createElement('div');
+            userDiv.className = 'mb-2';
+            userDiv.innerHTML = `<span class="text-cyan-400">&gt; You:</span> <span class="text-cyan-300">${message}</span>`;
+            deepseekConversation.appendChild(userDiv);
+
+            // Add AI response to conversation
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'mb-3 pl-2 border-l-2 border-cyan-400';
+            aiDiv.innerHTML = `<span class="text-green-400">&gt; DeepSeek:</span> <span class="text-green-300">${aiResponse}</span>`;
+            deepseekConversation.appendChild(aiDiv);
+
+            // Scroll to bottom
+            deepseekConversation.scrollTop = deepseekConversation.scrollHeight;
+
+            deepseekStatus.textContent = 'Ready';
+        } catch (error) {
+            console.error('DeepSeek API Error:', error);
+
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'mb-2 text-red-400';
+            errorDiv.innerHTML = `<span class="text-red-400">&gt; Error:</span> Failed to connect to DeepSeek AI. Please try again.`;
+            deepseekConversation.appendChild(errorDiv);
+            deepseekConversation.scrollTop = deepseekConversation.scrollHeight;
+
+            deepseekStatus.textContent = 'Error - Ready';
+        }
+    }
+
+    // Send button click handler
+    if (deepseekSend) {
+        deepseekSend.addEventListener('click', () => {
+            const message = deepseekInput.value.trim();
+            if (message) {
+                sendToDeepSeek(message);
+                deepseekInput.value = '';
+            }
+        });
+    }
+
+    // Enter key handler
+    if (deepseekInput) {
+        deepseekInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const message = deepseekInput.value.trim();
+                if (message) {
+                    sendToDeepSeek(message);
+                    deepseekInput.value = '';
+                }
+            }
+        });
+    }
+
+    // Clear conversation
+    if (deepseekClear) {
+        deepseekClear.addEventListener('click', () => {
+            deepseekConversation.innerHTML = `
+                <p class="text-cyan-400">&gt; DeepSeek AI Assistant Initialized</p>
+                <p class="text-cyan-300">&gt; Ask me anything - I'm here to help!</p>
+            `;
+            deepseekStatus.textContent = 'Ready';
+        });
+    }
+}
+
 // Add event listener for NETWORK button in Quick Access
-document.addEventListener('DOMContentLoaded', () => {});
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize DeepSeek AI functionality
+    initializeDeepSeek();
+});
 // Terminal simulation
 const terminalInput = document.querySelector('.terminal-input input');
 const terminalOutput = document.querySelector('.terminal-output');
@@ -123,7 +250,8 @@ terminalInput.addEventListener('keydown', async function(e) {
                     - DISCONNECT: Return to unmasked state<br>
                     - RUN: Execute system operations (use with flags)<br>
                     - REBOOT: Reset terminal interface<br>
-                    - SHADOW: Access quantum physics portal`;
+                    - SHADOW: Access quantum physics portal<br>
+                    - AI: Access DeepSeek AI Assistant`;
                     break;
                 case 'status':
                     response = `SYSTEM STATUS:<br>
@@ -267,6 +395,18 @@ terminalInput.addEventListener('keydown', async function(e) {
                     setTimeout(() => {
                         location.reload();
                     }, 3000);
+                    break;
+                case 'ai':
+                    response = `ACCESSING DEEPSEEK AI ASSISTANT...<br>
+                    NEURAL NETWORKS INITIALIZED<br>
+                    AI INTERFACE READY FOR QUERIES<br>
+                    SCROLLING TO AI SECTION...`;
+                    setTimeout(() => {
+                        document.querySelector('.jarvis-panel:nth-child(2)').scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                        document.getElementById('deepseek-input').focus();
+                    }, 1000);
                     break;
                 default:
                     response = `ERROR: UNKNOWN COMMAND '${command}'<br>

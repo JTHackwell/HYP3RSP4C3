@@ -72,6 +72,30 @@
             <div id="calc-result" class="text-cyan-300 mb-2"></div>
             <div id="calc-graph-area" style="height:300px;"></div>
         </div>
+        <!-- DeepSeek AI Assistant Panel -->
+        <div class="jarvis-panel mb-8">
+            <h2 class="text-xl mb-4 jarvis-header" style="font-size:1.5rem;">
+                <i data-feather="brain" class="mr-2"></i>DeepSeek AI Assistant
+            </h2>
+            <div class="mb-4">
+                <div id="deepseek-conversation" class="bg-gray-900 text-cyan-300 p-4 rounded h-64 overflow-y-auto mb-4">
+                    <p class="text-cyan-400">&gt; DeepSeek AI Assistant Initialized</p>
+                    <p class="text-cyan-300">&gt; Ask me anything - I'm here to help!</p>
+                </div>
+                <div class="flex gap-2">
+                    <input id="deepseek-input" type="text" class="bg-gray-900 text-cyan-300 px-3 py-2 rounded flex-1" placeholder="Ask DeepSeek AI anything..." maxlength="1000">
+                    <button id="deepseek-send" class="jarvis-btn px-4 py-2 rounded flex items-center">
+                        <i data-feather="send" class="mr-1"></i> Send
+                    </button>
+                    <button id="deepseek-clear" class="jarvis-btn px-4 py-2 rounded flex items-center">
+                        <i data-feather="trash-2" class="mr-1"></i> Clear
+                    </button>
+                </div>
+                <div class="mt-2 text-xs text-cyan-400">
+                    Status: <span id="deepseek-status">Ready</span> | Powered by DeepSeek AI
+                </div>
+            </div>
+        </div>
         <!-- Header -->
         <header class="mb-12">
             <h1 class="glitch jarvis-header mb-2" data-text="HYP3RSP4C3">HYP3RSP4C3</h1>
@@ -182,6 +206,9 @@
                     </button>
                     <button class="jarvis-btn p-2 rounded flex items-center justify-center">
                         <i data-feather="terminal" class="mr-1"></i> CMD
+                    </button>
+                    <button id="deepseek-access" class="jarvis-btn p-2 rounded flex items-center justify-center">
+                        <i data-feather="brain" class="mr-1"></i> AI
                     </button>
                 </div>
             </div>
