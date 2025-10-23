@@ -91,12 +91,12 @@ function initializeDeepSeek() {
             // Add user message to conversation
             const userDiv = document.createElement('div');
             userDiv.className = 'mb-2';
-            userDiv.innerHTML = `<span class="text-cyan-400">&gt; You:</span> <span class="text-cyan-300">${message}</span>`;
+            userDiv.innerHTML = `<span class="text-green-400">&gt; You:</span> <span class="text-green-300">${message}</span>`;
             deepseekConversation.appendChild(userDiv);
 
             // Add AI response to conversation
             const aiDiv = document.createElement('div');
-            aiDiv.className = 'mb-3 pl-2 border-l-2 border-cyan-400';
+            aiDiv.className = 'mb-3 pl-2 border-l-2 border-green-400';
             aiDiv.innerHTML = `<span class="text-green-400">&gt; DeepSeek:</span> <span class="text-green-300">${aiResponse}</span>`;
             deepseekConversation.appendChild(aiDiv);
 
@@ -146,8 +146,8 @@ function initializeDeepSeek() {
     if (deepseekClear) {
         deepseekClear.addEventListener('click', () => {
             deepseekConversation.innerHTML = `
-                <p class="text-cyan-400">&gt; DeepSeek AI Assistant Initialized</p>
-                <p class="text-cyan-300">&gt; Ask me anything - I'm here to help!</p>
+                <p class="text-green-400">&gt; DeepSeek AI Assistant Initialized</p>
+                <p class="text-green-300">&gt; Ask me anything - I'm here to help!</p>
             `;
             deepseekStatus.textContent = 'Ready';
         });
@@ -265,12 +265,12 @@ terminalInput.addEventListener('keydown', async function(e) {
                     // Simulate diagnostic checks
                     setTimeout(() => {
                         let diag = '';
-                        diag += 'Checking HTML structure... <span class="text-cyan-400">OK</span><br>';
-                        diag += 'Checking CSS file... <span class="text-cyan-400">OK</span><br>';
-                        diag += 'Checking JavaScript file... <span class="text-cyan-400">OK</span><br>';
-                        diag += 'Checking external resources... <span class="text-cyan-400">OK</span><br>';
-                        diag += 'Checking terminal responsiveness... <span class="text-cyan-400">OK</span><br>';
-                        diag += 'Checking security features... <span class="text-cyan-400">OK</span><br>';
+                        diag += 'Checking HTML structure... <span class="text-green-400">OK</span><br>';
+                        diag += 'Checking CSS file... <span class="text-green-400">OK</span><br>';
+                        diag += 'Checking JavaScript file... <span class="text-green-400">OK</span><br>';
+                        diag += 'Checking external resources... <span class="text-green-400">OK</span><br>';
+                        diag += 'Checking terminal responsiveness... <span class="text-green-400">OK</span><br>';
+                        diag += 'Checking security features... <span class="text-green-400">OK</span><br>';
                         diag += '<b>DIAGNOSTIC COMPLETE: NO ISSUES DETECTED</b>';
                         const responseElement = document.createElement('p');
                         responseElement.className = 'text-green-300';
