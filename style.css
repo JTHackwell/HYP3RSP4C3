@@ -1111,6 +1111,533 @@ body {
 }
 
 
+/* ========================================
+   DEVOPS FEATURES STYLING
+======================================== */
+
+
+/* DevOps Pipeline */
+
+.devops-pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pipeline-stage {
+    background: linear-gradient(135deg, #000000, #001100);
+    border: 1px solid #00ff00;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+}
+
+.stage-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.stage-name {
+    font-weight: bold;
+    color: #00ff00;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stage-status {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.status-building {
+    background: rgba(255, 170, 0, 0.2);
+    color: #ffaa00;
+    border: 1px solid #ffaa00;
+}
+
+.status-pending {
+    background: rgba(128, 128, 128, 0.2);
+    color: #888888;
+    border: 1px solid #888888;
+}
+
+.stage-details {
+    color: #cccccc;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.build-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #001100;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff00, #00cc00);
+    border-radius: 3px;
+    animation: progressPulse 2s infinite;
+}
+
+.deploy-btn {
+    background: linear-gradient(135deg, #001100, #003300);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.deploy-btn:hover {
+    background: linear-gradient(135deg, #003300, #005500);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+
+/* Infrastructure Grid */
+
+.infra-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.infra-card {
+    background: linear-gradient(135deg, #000000, #001100);
+    border: 1px solid #00ff00;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.1);
+}
+
+.infra-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.infra-header h5 {
+    color: #00ff00;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.infra-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    color: #cccccc;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+
+/* Build History */
+
+.build-history {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.build-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #000000, #001100);
+    border: 1px solid #00ff00;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.build-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.build-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00ff00;
+    text-shadow: 0 0 8px #00ff00;
+}
+
+.build-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.build-branch {
+    color: #00ccff;
+    font-weight: bold;
+}
+
+.build-commit {
+    color: #cccccc;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.build-time {
+    color: #888888;
+    font-size: 12px;
+}
+
+.build-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+/* Environment Grid */
+
+.environment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.env-card {
+    background: linear-gradient(135deg, #000000, #001100);
+    border: 1px solid #00ff00;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.env-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.env-header h5 {
+    color: #00ff00;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.env-status {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.env-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.env-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #cccccc;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.env-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.env-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #001100, #002200);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.env-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.env-btn.primary {
+    background: linear-gradient(135deg, #003300, #005500);
+}
+
+.env-btn:hover:not(:disabled) {
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+
+/* Metrics Dashboard */
+
+.metrics-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #000000, #001100);
+    border: 1px solid #00ff00;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.metric-header h5 {
+    color: #00ff00;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.metric-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 15px #00ff00;
+    margin: 10px 0;
+}
+
+.metric-trend {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.trend-up {
+    color: #00ff00;
+}
+
+.trend-down {
+    color: #ff4444;
+}
+
+.trend-neutral {
+    color: #888888;
+}
+
+.metric-chart {
+    height: 60px;
+    background: rgba(0, 255, 0, 0.05);
+    border-radius: 4px;
+    padding: 5px;
+}
+
+
+/* Alerts Container */
+
+.alerts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.alert-warning {
+    background: rgba(255, 170, 0, 0.1);
+    border-left-color: #ffaa00;
+    border: 1px solid rgba(255, 170, 0, 0.3);
+}
+
+.alert-info {
+    background: rgba(0, 170, 255, 0.1);
+    border-left-color: #00aaff;
+    border: 1px solid rgba(0, 170, 255, 0.3);
+}
+
+.alert-success {
+    background: rgba(0, 255, 0, 0.1);
+    border-left-color: #00ff00;
+    border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.alert-message {
+    color: #cccccc;
+    margin-bottom: 5px;
+}
+
+.alert-time {
+    color: #888888;
+    font-size: 12px;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.alert-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.alert-btn {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.alert-btn:hover {
+    background: rgba(0, 255, 0, 0.2);
+}
+
+
+/* Health Grid */
+
+.health-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.health-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: linear-gradient(135deg, #000000, #001100);
+    border: 1px solid #00ff00;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.health-indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    animation: healthPulse 2s infinite;
+}
+
+.status-healthy {
+    background: #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.health-info {
+    flex: 1;
+}
+
+.health-info h5 {
+    color: #00ff00;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.health-info span {
+    color: #cccccc;
+    font-size: 14px;
+}
+
+.health-status {
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+/* DevOps Animations */
+
+@keyframes progressPulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes healthPulse {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
 /* Responsive Design */
 
 @media (max-width: 768px) {

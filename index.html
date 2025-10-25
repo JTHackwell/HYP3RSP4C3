@@ -582,6 +582,425 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- DevOps Dashboard Tab -->
+                    <div class="admin-tab-content hidden" id="admin-devops">
+                        <h3 class="text-xl mb-4 hacker-glow">DevOps Operations Dashboard</h3>
+
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">Deployment Pipeline Status</h4>
+                            <div class="devops-pipeline">
+                                <div class="pipeline-stage">
+                                    <div class="stage-header">
+                                        <i data-feather="git-branch" class="text-blue-400"></i>
+                                        <span class="stage-name">Source Control</span>
+                                        <span class="stage-status status-active">Active</span>
+                                    </div>
+                                    <div class="stage-details">
+                                        <p>Branch: main | Commit: a7f3b2c</p>
+                                        <p>Last Push: 2 hours ago</p>
+                                    </div>
+                                </div>
+
+                                <div class="pipeline-stage">
+                                    <div class="stage-header">
+                                        <i data-feather="package" class="text-yellow-400"></i>
+                                        <span class="stage-name">Build</span>
+                                        <span class="stage-status status-active">Building</span>
+                                    </div>
+                                    <div class="stage-details">
+                                        <p>Build #127 | Duration: 2m 34s</p>
+                                        <div class="build-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 78%"></div>
+                                            </div>
+                                            <span>78% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pipeline-stage">
+                                    <div class="stage-header">
+                                        <i data-feather="check-circle" class="text-green-400"></i>
+                                        <span class="stage-name">Test</span>
+                                        <span class="stage-status status-active">Passed</span>
+                                    </div>
+                                    <div class="stage-details">
+                                        <p>Tests: 847 passed | 0 failed</p>
+                                        <p>Coverage: 94.2%</p>
+                                    </div>
+                                </div>
+
+                                <div class="pipeline-stage">
+                                    <div class="stage-header">
+                                        <i data-feather="upload-cloud" class="text-purple-400"></i>
+                                        <span class="stage-name">Deploy</span>
+                                        <span class="stage-status status-pending">Pending</span>
+                                    </div>
+                                    <div class="stage-details">
+                                        <p>Environment: Production</p>
+                                        <button class="deploy-btn">Deploy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Infrastructure Status</h4>
+                            <div class="infra-grid">
+                                <div class="infra-card">
+                                    <div class="infra-header">
+                                        <i data-feather="server" class="text-green-400"></i>
+                                        <h5>Web Servers</h5>
+                                    </div>
+                                    <div class="infra-stats">
+                                        <div class="stat-item">
+                                            <span>Online:</span>
+                                            <span class="text-green-400">3/3</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span>Load:</span>
+                                            <span>24%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infra-card">
+                                    <div class="infra-header">
+                                        <i data-feather="database" class="text-blue-400"></i>
+                                        <h5>Databases</h5>
+                                    </div>
+                                    <div class="infra-stats">
+                                        <div class="stat-item">
+                                            <span>Active:</span>
+                                            <span class="text-green-400">2/2</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span>Connections:</span>
+                                            <span>47</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infra-card">
+                                    <div class="infra-header">
+                                        <i data-feather="cloud" class="text-cyan-400"></i>
+                                        <h5>CDN</h5>
+                                    </div>
+                                    <div class="infra-stats">
+                                        <div class="stat-item">
+                                            <span>Nodes:</span>
+                                            <span class="text-green-400">12/12</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span>Cache Hit:</span>
+                                            <span>97.3%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infra-card">
+                                    <div class="infra-header">
+                                        <i data-feather="shield-check" class="text-green-400"></i>
+                                        <h5>Load Balancer</h5>
+                                    </div>
+                                    <div class="infra-stats">
+                                        <div class="stat-item">
+                                            <span>Status:</span>
+                                            <span class="text-green-400">Healthy</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span>RPS:</span>
+                                            <span>1.2k</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CI/CD Management Tab -->
+                    <div class="admin-tab-content hidden" id="admin-cicd">
+                        <h3 class="text-xl mb-4 hacker-glow">CI/CD Management</h3>
+
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">Build History</h4>
+                            <div class="build-history">
+                                <div class="build-item">
+                                    <div class="build-info">
+                                        <div class="build-number">#127</div>
+                                        <div class="build-details">
+                                            <div class="build-branch">main branch</div>
+                                            <div class="build-commit">a7f3b2c - Fix admin panel styling</div>
+                                            <div class="build-time">2 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="build-status status-building">
+                                        <i data-feather="loader" class="animate-spin"></i> Building
+                                    </div>
+                                </div>
+
+                                <div class="build-item">
+                                    <div class="build-info">
+                                        <div class="build-number">#126</div>
+                                        <div class="build-details">
+                                            <div class="build-branch">main branch</div>
+                                            <div class="build-commit">f8e1d9a - Add DevOps features</div>
+                                            <div class="build-time">4 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="build-status status-success">
+                                        <i data-feather="check-circle"></i> Success
+                                    </div>
+                                </div>
+
+                                <div class="build-item">
+                                    <div class="build-info">
+                                        <div class="build-number">#125</div>
+                                        <div class="build-details">
+                                            <div class="build-branch">feature/admin</div>
+                                            <div class="build-commit">c3d2a1b - Implement user management</div>
+                                            <div class="build-time">6 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="build-status status-success">
+                                        <i data-feather="check-circle"></i> Success
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Deployment Environments</h4>
+                            <div class="environment-grid">
+                                <div class="env-card">
+                                    <div class="env-header">
+                                        <h5>Production</h5>
+                                        <span class="env-status status-active">Live</span>
+                                    </div>
+                                    <div class="env-details">
+                                        <div class="env-info">
+                                            <span>Version: v2.1.4</span>
+                                            <span>Deployed: 2 days ago</span>
+                                        </div>
+                                        <div class="env-actions">
+                                            <button class="env-btn">Rollback</button>
+                                            <button class="env-btn primary">Deploy</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="env-card">
+                                    <div class="env-header">
+                                        <h5>Staging</h5>
+                                        <span class="env-status status-active">Ready</span>
+                                    </div>
+                                    <div class="env-details">
+                                        <div class="env-info">
+                                            <span>Version: v2.1.5-rc1</span>
+                                            <span>Deployed: 4 hours ago</span>
+                                        </div>
+                                        <div class="env-actions">
+                                            <button class="env-btn">Test</button>
+                                            <button class="env-btn primary">Promote</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="env-card">
+                                    <div class="env-header">
+                                        <h5>Development</h5>
+                                        <span class="env-status status-building">Updating</span>
+                                    </div>
+                                    <div class="env-details">
+                                        <div class="env-info">
+                                            <span>Version: v2.2.0-dev</span>
+                                            <span>Building: 2m 15s</span>
+                                        </div>
+                                        <div class="env-actions">
+                                            <button class="env-btn" disabled>Cancel</button>
+                                            <button class="env-btn" disabled>Deploy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Pipeline Configuration</h4>
+                            <div class="pipeline-config">
+                                <div class="config-section">
+                                    <h5>Build Settings</h5>
+                                    <div class="config-options">
+                                        <label class="config-label">
+                                            <input type="checkbox" checked> Auto-build on commit
+                                        </label>
+                                        <label class="config-label">
+                                            <input type="checkbox" checked> Run tests before build
+                                        </label>
+                                        <label class="config-label">
+                                            <input type="checkbox"> Deploy on successful build
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="config-section">
+                                    <h5>Notification Settings</h5>
+                                    <div class="config-options">
+                                        <label class="config-label">
+                                            <input type="checkbox" checked> Email on build failure
+                                        </label>
+                                        <label class="config-label">
+                                            <input type="checkbox"> Slack notifications
+                                        </label>
+                                        <label class="config-label">
+                                            <input type="checkbox" checked> SMS alerts for critical failures
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monitoring Tab -->
+                    <div class="admin-tab-content hidden" id="admin-monitoring">
+                        <h3 class="text-xl mb-4 hacker-glow">System Monitoring</h3>
+
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">Performance Metrics</h4>
+                            <div class="metrics-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <i data-feather="zap" class="text-yellow-400"></i>
+                                        <h5>Response Time</h5>
+                                    </div>
+                                    <div class="metric-value">247ms</div>
+                                    <div class="metric-trend trend-up">↗ +5% from last hour</div>
+                                    <div class="metric-chart">
+                                        <canvas id="response-time-chart" width="200" height="60"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <i data-feather="users" class="text-blue-400"></i>
+                                        <h5>Active Users</h5>
+                                    </div>
+                                    <div class="metric-value">1,234</div>
+                                    <div class="metric-trend trend-up">↗ +12% from last hour</div>
+                                    <div class="metric-chart">
+                                        <canvas id="users-chart" width="200" height="60"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <i data-feather="activity" class="text-green-400"></i>
+                                        <h5>Throughput</h5>
+                                    </div>
+                                    <div class="metric-value">2.1k RPS</div>
+                                    <div class="metric-trend trend-down">↘ -3% from last hour</div>
+                                    <div class="metric-chart">
+                                        <canvas id="throughput-chart" width="200" height="60"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <i data-feather="alert-triangle" class="text-red-400"></i>
+                                        <h5>Error Rate</h5>
+                                    </div>
+                                    <div class="metric-value">0.02%</div>
+                                    <div class="metric-trend trend-neutral">→ No change</div>
+                                    <div class="metric-chart">
+                                        <canvas id="error-chart" width="200" height="60"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Alerts & Notifications</h4>
+                            <div class="alerts-container">
+                                <div class="alert-item alert-warning">
+                                    <i data-feather="alert-triangle"></i>
+                                    <div class="alert-content">
+                                        <div class="alert-title">High CPU Usage Detected</div>
+                                        <div class="alert-message">Server-02 CPU usage exceeded 85% threshold</div>
+                                        <div class="alert-time">5 minutes ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-btn">Acknowledge</button>
+                                        <button class="alert-btn">Investigate</button>
+                                    </div>
+                                </div>
+
+                                <div class="alert-item alert-info">
+                                    <i data-feather="info"></i>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Backup Completed</div>
+                                        <div class="alert-message">Daily backup of production database completed successfully</div>
+                                        <div class="alert-time">2 hours ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-btn">Dismiss</button>
+                                    </div>
+                                </div>
+
+                                <div class="alert-item alert-success">
+                                    <i data-feather="check-circle"></i>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Deployment Successful</div>
+                                        <div class="alert-message">Version v2.1.4 deployed to production environment</div>
+                                        <div class="alert-time">6 hours ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-btn">Dismiss</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Health Checks</h4>
+                            <div class="health-grid">
+                                <div class="health-item">
+                                    <div class="health-indicator status-healthy"></div>
+                                    <div class="health-info">
+                                        <h5>API Endpoints</h5>
+                                        <span>All endpoints responding</span>
+                                    </div>
+                                    <div class="health-status">Healthy</div>
+                                </div>
+
+                                <div class="health-item">
+                                    <div class="health-indicator status-healthy"></div>
+                                    <div class="health-info">
+                                        <h5>Database Connections</h5>
+                                        <span>Connection pool: 47/100</span>
+                                    </div>
+                                    <div class="health-status">Healthy</div>
+                                </div>
+
+                                <div class="health-item">
+                                    <div class="health-indicator status-warning"></div>
+                                    <div class="health-info">
+                                        <h5>Cache Layer</h5>
+                                        <span>Redis memory usage: 82%</span>
+                                    </div>
+                                    <div class="health-status">Warning</div>
+                                </div>
+
+                                <div class="health-item">
+                                    <div class="health-indicator status-healthy"></div>
+                                    <div class="health-info">
+                                        <h5>External Services</h5>
+                                        <span>All integrations online</span>
+                                    </div>
+                                    <div class="health-status">Healthy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Admin Navigation Tabs -->
@@ -597,6 +1016,15 @@
                     </button>
                     <button class="admin-nav-btn" data-tab="admin-ai">
                         <i data-feather="brain"></i>AI
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-devops">
+                        <i data-feather="settings"></i>DevOps
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-cicd">
+                        <i data-feather="git-merge"></i>CI/CD
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-monitoring">
+                        <i data-feather="bar-chart-2"></i>Monitor
                     </button>
                     <button class="admin-nav-btn" data-tab="admin-terminal">
                         <i data-feather="terminal"></i>Terminal
