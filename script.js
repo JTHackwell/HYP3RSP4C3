@@ -35,6 +35,140 @@ feather.replace();
 const DEEPSEEK_API_KEY = 'sk-10b9a5a1b6ec4d06a4f04584330b031f';
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
+// Enhanced Response Processor for DeepSeek
+function processDeepSeekResponse(rawResponse) {
+    if (!rawResponse) return '';
+
+    try {
+        // Configure marked.js options for better rendering
+        marked.setOptions({
+            breaks: true,
+            gfm: true, // GitHub Flavored Markdown
+            tables: true,
+            sanitize: false,
+            highlight: function(code, lang) {
+                // Basic syntax highlighting for code blocks
+                return `<pre class="bg-gray-900 text-green-300 p-3 rounded border border-green-500 overflow-x-auto"><code class="language-${lang || 'text'}">${code}</code></pre>`;
+            }
+        });
+
+        // Process the markdown content
+        let processedContent = marked.parse(rawResponse);
+
+        // Enhanced table styling for cyberpunk theme
+        processedContent = processedContent.replace(
+            /<table>/g,
+            '<table class="table-auto border-collapse border border-green-500 w-full my-4 bg-black">'
+        );
+        processedContent = processedContent.replace(
+            /<th>/g,
+            '<th class="border border-green-500 px-4 py-2 bg-green-900 text-green-300 font-bold">'
+        );
+        processedContent = processedContent.replace(
+            /<td>/g,
+            '<td class="border border-green-500 px-4 py-2 text-green-300">'
+        );
+
+        // Enhanced code block styling
+        processedContent = processedContent.replace(
+            /<code>/g,
+            '<code class="bg-gray-800 text-green-400 px-2 py-1 rounded text-sm">'
+        );
+
+        // Enhanced blockquote styling
+        processedContent = processedContent.replace(
+            /<blockquote>/g,
+            '<blockquote class="border-l-4 border-green-500 pl-4 italic text-green-300 my-2 bg-gray-900 py-2">'
+        );
+
+        // Enhanced list styling
+        processedContent = processedContent.replace(
+            /<ul>/g,
+            '<ul class="list-disc list-inside text-green-300 my-2 space-y-1">'
+        );
+        processedContent = processedContent.replace(
+            /<ol>/g,
+            '<ol class="list-decimal list-inside text-green-300 my-2 space-y-1">'
+        );
+
+        // Enhanced heading styling
+        processedContent = processedContent.replace(
+            /<h1>/g,
+            '<h1 class="text-2xl font-bold text-green-300 mb-3 hacker-glow">'
+        );
+        processedContent = processedContent.replace(
+            /<h2>/g,
+            '<h2 class="text-xl font-bold text-green-300 mb-2 hacker-glow">'
+        );
+        processedContent = processedContent.replace(
+            /<h3>/g,
+            '<h3 class="text-lg font-bold text-green-300 mb-2 hacker-glow">'
+        );
+
+        // Enhanced paragraph styling
+        processedContent = processedContent.replace(
+            /<p>/g,
+            '<p class="text-green-300 mb-2 leading-relaxed">'
+        );
+
+        return processedContent;
+
+    } catch (error) {
+        console.error('Error processing DeepSeek response:', error);
+        // Fallback to basic HTML escaping if markdown processing fails
+        return rawResponse.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+    }
+}
+
+// Function to render mathematical expressions after DOM update
+function renderMathInElement(element) {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        // Add loading class temporarily
+        const mathElements = element.querySelectorAll('.MathJax, mjx-container');
+        mathElements.forEach(el => el.classList.add('math-loading'));
+
+        // MathJax v3 rendering
+        window.MathJax.typesetPromise([element]).then(() => {
+            // Remove loading class after rendering
+            mathElements.forEach(el => el.classList.remove('math-loading'));
+        }).catch(function(err) {
+            console.error('MathJax rendering error:', err);
+            mathElements.forEach(el => el.classList.remove('math-loading'));
+        });
+    }
+}
+
+// Enhanced prompt suggestions for better formatting
+function enhanceUserPrompt(userPrompt) {
+    // Add formatting hints for common requests
+    const formatHints = [];
+
+    if (userPrompt.toLowerCase().includes('table') || userPrompt.toLowerCase().includes('compare')) {
+        formatHints.push('Please format any data in a table using markdown table syntax (| Header | Header |)');
+    }
+
+    if (userPrompt.toLowerCase().includes('math') || userPrompt.toLowerCase().includes('equation') ||
+        userPrompt.toLowerCase().includes('formula') || userPrompt.toLowerCase().includes('calculate')) {
+        formatHints.push('Please use LaTeX notation for mathematical expressions ($ for inline math, $$ for display math)');
+    }
+
+    if (userPrompt.toLowerCase().includes('code') || userPrompt.toLowerCase().includes('programming') ||
+        userPrompt.toLowerCase().includes('script')) {
+        formatHints.push('Please format code using markdown code blocks with language specification');
+    }
+
+    if (userPrompt.toLowerCase().includes('list') || userPrompt.toLowerCase().includes('steps')) {
+        formatHints.push('Please format lists using markdown list syntax (- for bullets, 1. for numbers)');
+    }
+
+    // Append hints to the original prompt if any were generated
+    if (formatHints.length > 0) {
+        return userPrompt + '\n\n[System formatting request: ' + formatHints.join(', ') + ']';
+    }
+
+    return userPrompt;
+}
+
 // DeepSeek AI functionality
 function initializeDeepSeek() {
     const deepseekInput = document.getElementById('deepseek-input');
@@ -57,7 +191,24 @@ function initializeDeepSeek() {
     // Send message to DeepSeek
     async function sendToDeepSeek(message) {
         try {
-            deepseekStatus.textContent = 'Thinking...';
+            // Smart status messages based on user input
+            const statusMessages = [
+                'Thinking...',
+                'Processing...',
+                'Analyzing...'
+            ];
+
+            if (message.toLowerCase().includes('table') || message.toLowerCase().includes('data')) {
+                statusMessages.push('Generating table...');
+            }
+            if (message.toLowerCase().includes('math') || message.toLowerCase().includes('equation')) {
+                statusMessages.push('Computing equations...');
+            }
+            if (message.toLowerCase().includes('code') || message.toLowerCase().includes('programming')) {
+                statusMessages.push('Compiling response...');
+            }
+
+            deepseekStatus.textContent = statusMessages[Math.floor(Math.random() * statusMessages.length)];
 
             const response = await fetch(DEEPSEEK_API_URL, {
                 method: 'POST',
@@ -69,11 +220,11 @@ function initializeDeepSeek() {
                     model: 'deepseek-chat',
                     messages: [{
                             role: 'system',
-                            content: 'You are a helpful AI assistant integrated into the HYP3RSP4C3 system. Provide clear, concise, and helpful responses.'
+                            content: 'You are a helpful AI assistant integrated into the HYP3RSP4C3 cyberpunk system. Provide clear, detailed responses using proper markdown formatting. Use tables when presenting data, mathematical expressions with LaTeX notation ($ for inline, $$ for display), code blocks with ```language syntax, headers with #, lists with - or 1., and **bold** or *italic* text for emphasis. Format your responses to be visually appealing and well-structured.'
                         },
                         {
                             role: 'user',
-                            content: message
+                            content: enhanceUserPrompt(message)
                         }
                     ],
                     max_tokens: 1000,
@@ -86,7 +237,7 @@ function initializeDeepSeek() {
             }
 
             const data = await response.json();
-            const aiResponse = data.choices[0].message.content;
+            const rawAiResponse = data.choices[0].message.content;
 
             // Add user message to conversation
             const userDiv = document.createElement('div');
@@ -94,11 +245,26 @@ function initializeDeepSeek() {
             userDiv.innerHTML = `<span class="text-green-400">&gt; You:</span> <span class="text-green-300">${message}</span>`;
             deepseekConversation.appendChild(userDiv);
 
-            // Add AI response to conversation
+            // Process and add AI response to conversation
             const aiDiv = document.createElement('div');
-            aiDiv.className = 'mb-3 pl-2 border-l-2 border-green-400';
-            aiDiv.innerHTML = `<span class="text-green-400">&gt; DeepSeek:</span> <span class="text-green-300">${aiResponse}</span>`;
+            aiDiv.className = 'mb-3 pl-2 border-l-2 border-green-400 bg-gray-900 bg-opacity-30 rounded-r-lg p-3';
+
+            // Process the response for proper rendering
+            const processedResponse = processDeepSeekResponse(rawAiResponse);
+
+            aiDiv.innerHTML = `
+                <div class="text-green-400 font-bold mb-2 flex items-center">
+                    <span class="animate-pulse mr-2">▶</span> DeepSeek AI:
+                </div>
+                <div class="deepseek-content pl-4">
+                    ${processedResponse}
+                </div>
+            `;
+
             deepseekConversation.appendChild(aiDiv);
+
+            // Render mathematical expressions if any
+            renderMathInElement(aiDiv);
 
             // Scroll to bottom
             deepseekConversation.scrollTop = deepseekConversation.scrollHeight;
