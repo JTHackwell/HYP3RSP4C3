@@ -499,7 +499,8 @@ terminalInput.addEventListener('keydown', async function(e) {
                     - REBOOT: Reset terminal interface<br>
                     - SHADOW: Access quantum physics portal<br>
                     - AI: Access DeepSeek AI Assistant<br>
-                    - CMD: Access administrative interface [AUTH REQUIRED]`;
+                    - CMD: Access administrative interface [AUTH REQUIRED]<br>
+                    - ADMIN: Alternative admin access [AUTH REQUIRED]`;
                     break;
                 case 'status':
                     response = `SYSTEM STATUS:<br>
@@ -660,6 +661,16 @@ terminalInput.addEventListener('keydown', async function(e) {
                     response = `ACCESSING ADMINISTRATIVE INTERFACE...<br>
                     AUTHENTICATION REQUIRED<br>
                     PLEASE STAND BY...`;
+
+                    // Show password prompt after a brief delay
+                    setTimeout(() => {
+                        showPasswordPrompt();
+                    }, 1500);
+                    break;
+                case 'admin':
+                    response = `INITIALIZING ADMIN PROTOCOL...<br>
+                    SECURE AUTHENTICATION REQUIRED<br>
+                    VERIFYING ADMINISTRATOR CREDENTIALS...`;
 
                     // Show password prompt after a brief delay
                     setTimeout(() => {

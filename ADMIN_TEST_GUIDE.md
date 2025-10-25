@@ -12,6 +12,10 @@
    ```
    cmd
    ```
+   **OR**
+   ```
+   admin
+   ```
 
 4. **Enter Password:**
    ```
@@ -63,8 +67,8 @@
 
 ### 🔑 **Authentication Process:**
 
-1. **Command Trigger:** `cmd` in terminal
-2. **Security Response:** "ACCESSING ADMINISTRATIVE INTERFACE..."
+1. **Command Trigger:** `cmd` or `admin` in terminal
+2. **Security Response:** "ACCESSING ADMINISTRATIVE INTERFACE..." or "INITIALIZING ADMIN PROTOCOL..."
 3. **Password Prompt:** Secure modal with cyberpunk styling
 4. **Correct Password:** `1812`
 5. **Access Granted:** Full admin panel with all features
@@ -106,7 +110,7 @@
 ### 🚨 **Testing Scenarios:**
 
 #### **Success Path:**
-1. Type `cmd` → See access message
+1. Type `cmd` or `admin` → See access message
 2. Enter `1812` → Authentication success
 3. Admin panel opens with all tabs
 4. Navigate between tabs
@@ -114,7 +118,7 @@
 6. Close panel → Session ends
 
 #### **Error Path:**
-1. Type `cmd` → See access message  
+1. Type `cmd` or `admin` → See access message  
 2. Enter wrong password → Error animation
 3. Try again with `1812` → Success
 
@@ -137,4 +141,4 @@
 
 ---
 
-**🎯 Ready to test! Type `cmd` in the terminal and enter password `1812` to explore the admin features.**
+**🎯 Ready to test! Type `cmd` or `admin` in the terminal and enter password `1812` to explore the admin features.**
