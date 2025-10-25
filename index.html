@@ -301,6 +301,335 @@
                 </div>
             </div>
         </div>
+
+        <!-- Admin Panel (Initially Hidden) -->
+        <div id="admin-panel" class="admin-panel hidden">
+            <div class="admin-overlay"></div>
+            <div class="admin-container">
+                <div class="admin-header">
+                    <h2 class="text-2xl font-bold hacker-glow flex items-center">
+                        <i data-feather="shield" class="mr-3"></i> [ADMIN CONTROL PANEL]
+                    </h2>
+                    <button id="admin-close" class="admin-close-btn">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+
+                <div class="admin-content">
+                    <!-- System Status Tab -->
+                    <div class="admin-tab-content" id="admin-system">
+                        <h3 class="text-xl mb-4 hacker-glow">System Overview</h3>
+
+                        <div class="admin-stats-grid">
+                            <div class="admin-stat-card">
+                                <div class="stat-icon"><i data-feather="cpu"></i></div>
+                                <div class="stat-info">
+                                    <h4>CPU Usage</h4>
+                                    <div class="stat-value" id="cpu-usage">72%</div>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 72%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="admin-stat-card">
+                                <div class="stat-icon"><i data-feather="hard-drive"></i></div>
+                                <div class="stat-info">
+                                    <h4>Memory Usage</h4>
+                                    <div class="stat-value" id="memory-usage">58%</div>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 58%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="admin-stat-card">
+                                <div class="stat-icon"><i data-feather="database"></i></div>
+                                <div class="stat-info">
+                                    <h4>Storage</h4>
+                                    <div class="stat-value" id="storage-usage">43%</div>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" style="width: 43%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="admin-stat-card">
+                                <div class="stat-icon"><i data-feather="activity"></i></div>
+                                <div class="stat-info">
+                                    <h4>Active Sessions</h4>
+                                    <div class="stat-value" id="active-sessions">1</div>
+                                    <div class="text-sm text-green-400">Current User Active</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3 hacker-glow">System Information</h4>
+                            <div class="admin-info-grid">
+                                <div class="info-row">
+                                    <span class="info-label">System Version:</span>
+                                    <span class="info-value">HYP3RSP4C3 v2.1.5</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Uptime:</span>
+                                    <span class="info-value" id="system-uptime">2d 14h 32m</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Security Level:</span>
+                                    <span class="info-value text-green-400">MAXIMUM</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Last Backup:</span>
+                                    <span class="info-value" id="last-backup">2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Management Tab -->
+                    <div class="admin-tab-content hidden" id="admin-users">
+                        <h3 class="text-xl mb-4 hacker-glow">User Management</h3>
+
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">Active Users</h4>
+                            <div class="user-table">
+                                <div class="table-header">
+                                    <span>Username</span>
+                                    <span>Status</span>
+                                    <span>Last Activity</span>
+                                    <span>Actions</span>
+                                </div>
+                                <div class="table-row">
+                                    <span class="text-green-300">admin</span>
+                                    <span class="status-active">Active</span>
+                                    <span>Now</span>
+                                    <button class="admin-btn-sm">View Details</button>
+                                </div>
+                                <div class="table-row">
+                                    <span class="text-green-300">guest_user</span>
+                                    <span class="status-inactive">Inactive</span>
+                                    <span>5 min ago</span>
+                                    <button class="admin-btn-sm">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Session Logs</h4>
+                            <div class="log-container" id="session-logs">
+                                <div class="log-entry">
+                                    <span class="log-time">[15:42:12]</span>
+                                    <span class="log-user">admin</span>
+                                    <span class="log-action">Accessed admin panel</span>
+                                </div>
+                                <div class="log-entry">
+                                    <span class="log-time">[15:40:33]</span>
+                                    <span class="log-user">admin</span>
+                                    <span class="log-action">Command executed: 'cmd'</span>
+                                </div>
+                                <div class="log-entry">
+                                    <span class="log-time">[15:38:15]</span>
+                                    <span class="log-user">guest_user</span>
+                                    <span class="log-action">Terminal command: 'help'</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div class="admin-tab-content hidden" id="admin-security">
+                        <h3 class="text-xl mb-4 hacker-glow">Security Center</h3>
+
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">Security Status</h4>
+                            <div class="security-grid">
+                                <div class="security-item">
+                                    <i data-feather="shield-check" class="security-icon text-green-400"></i>
+                                    <div>
+                                        <h5>Firewall</h5>
+                                        <span class="status-active">Active</span>
+                                    </div>
+                                </div>
+                                <div class="security-item">
+                                    <i data-feather="lock" class="security-icon text-green-400"></i>
+                                    <div>
+                                        <h5>Encryption</h5>
+                                        <span class="status-active">AES-256</span>
+                                    </div>
+                                </div>
+                                <div class="security-item">
+                                    <i data-feather="eye" class="security-icon text-green-400"></i>
+                                    <div>
+                                        <h5>Monitoring</h5>
+                                        <span class="status-active">Real-time</span>
+                                    </div>
+                                </div>
+                                <div class="security-item">
+                                    <i data-feather="alert-triangle" class="security-icon text-yellow-400"></i>
+                                    <div>
+                                        <h5>Threat Level</h5>
+                                        <span class="status-warning">Low</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Recent Security Events</h4>
+                            <div class="security-logs">
+                                <div class="security-log-entry">
+                                    <i data-feather="shield" class="text-green-400 mr-2"></i>
+                                    <span>Admin authentication successful</span>
+                                    <span class="log-time">2 min ago</span>
+                                </div>
+                                <div class="security-log-entry">
+                                    <i data-feather="key" class="text-blue-400 mr-2"></i>
+                                    <span>Password authentication attempt</span>
+                                    <span class="log-time">2 min ago</span>
+                                </div>
+                                <div class="security-log-entry">
+                                    <i data-feather="globe" class="text-green-400 mr-2"></i>
+                                    <span>New session established</span>
+                                    <span class="log-time">15 min ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Management Tab -->
+                    <div class="admin-tab-content hidden" id="admin-ai">
+                        <h3 class="text-xl mb-4 hacker-glow">AI System Management</h3>
+
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">DeepSeek Status</h4>
+                            <div class="ai-stats">
+                                <div class="ai-stat">
+                                    <span class="stat-label">API Status:</span>
+                                    <span class="text-green-400 font-bold">Connected</span>
+                                </div>
+                                <div class="ai-stat">
+                                    <span class="stat-label">Response Time:</span>
+                                    <span id="ai-response-time">1.2s avg</span>
+                                </div>
+                                <div class="ai-stat">
+                                    <span class="stat-label">Queries Today:</span>
+                                    <span id="ai-queries">47</span>
+                                </div>
+                                <div class="ai-stat">
+                                    <span class="stat-label">Success Rate:</span>
+                                    <span class="text-green-400">99.8%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">AI Configuration</h4>
+                            <div class="ai-config">
+                                <div class="config-row">
+                                    <label>Temperature:</label>
+                                    <input type="range" min="0" max="1" step="0.1" value="0.7" class="admin-slider">
+                                    <span>0.7</span>
+                                </div>
+                                <div class="config-row">
+                                    <label>Max Tokens:</label>
+                                    <input type="number" value="1000" class="admin-input" style="width: 100px;">
+                                </div>
+                                <div class="config-row">
+                                    <label>Model:</label>
+                                    <select class="admin-select">
+                                        <option value="deepseek-chat">deepseek-chat</option>
+                                        <option value="deepseek-coder">deepseek-coder</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Management Tab -->
+                    <div class="admin-tab-content hidden" id="admin-terminal">
+                        <h3 class="text-xl mb-4 hacker-glow">Terminal Management</h3>
+
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">Command History</h4>
+                            <div class="command-history" id="admin-command-history">
+                                <!-- Command history will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Terminal Settings</h4>
+                            <div class="terminal-settings">
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox" checked> Enable Command Logging
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox" checked> Show Timestamps
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox"> Restrict Guest Commands
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <button class="admin-btn">Clear Terminal History</button>
+                                    <button class="admin-btn">Export Logs</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Navigation Tabs -->
+                <div class="admin-nav">
+                    <button class="admin-nav-btn active" data-tab="admin-system">
+                        <i data-feather="monitor"></i>System
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-users">
+                        <i data-feather="users"></i>Users
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-security">
+                        <i data-feather="shield"></i>Security
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-ai">
+                        <i data-feather="brain"></i>AI
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-terminal">
+                        <i data-feather="terminal"></i>Terminal
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Prompt Modal -->
+        <div id="password-modal" class="password-modal hidden">
+            <div class="password-overlay"></div>
+            <div class="password-container">
+                <div class="password-header">
+                    <h3 class="text-xl hacker-glow">
+                        <i data-feather="lock" class="mr-2"></i> ADMIN ACCESS REQUIRED
+                    </h3>
+                </div>
+                <div class="password-body">
+                    <p class="text-green-300 mb-4">Enter administrative credentials to continue:</p>
+                    <input type="password" id="admin-password-input" class="password-input" placeholder="[ENTER PASSWORD]" maxlength="10">
+                    <div class="password-feedback" id="password-feedback"></div>
+                </div>
+                <div class="password-actions">
+                    <button id="password-submit" class="password-btn password-btn-primary">
+                        <i data-feather="check"></i> AUTHENTICATE
+                    </button>
+                    <button id="password-cancel" class="password-btn password-btn-secondary">
+                        <i data-feather="x"></i> CANCEL
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer removed -->
     </div>
     <script src="calculator.js"></script>

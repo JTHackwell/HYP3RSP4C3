@@ -498,7 +498,8 @@ terminalInput.addEventListener('keydown', async function(e) {
                     - RUN: Execute system operations (use with flags)<br>
                     - REBOOT: Reset terminal interface<br>
                     - SHADOW: Access quantum physics portal<br>
-                    - AI: Access DeepSeek AI Assistant`;
+                    - AI: Access DeepSeek AI Assistant<br>
+                    - CMD: Access administrative interface [AUTH REQUIRED]`;
                     break;
                 case 'status':
                     response = `SYSTEM STATUS:<br>
@@ -655,6 +656,16 @@ terminalInput.addEventListener('keydown', async function(e) {
                         document.getElementById('deepseek-input').focus();
                     }, 1000);
                     break;
+                case 'cmd':
+                    response = `ACCESSING ADMINISTRATIVE INTERFACE...<br>
+                    AUTHENTICATION REQUIRED<br>
+                    PLEASE STAND BY...`;
+
+                    // Show password prompt after a brief delay
+                    setTimeout(() => {
+                        showPasswordPrompt();
+                    }, 1500);
+                    break;
                 default:
                     response = `ERROR: UNKNOWN COMMAND '${command}'<br>
                     TYPE 'HELP' FOR AVAILABLE COMMANDS`;
@@ -667,4 +678,398 @@ terminalInput.addEventListener('keydown', async function(e) {
         // Scroll to bottom
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
+});
+
+// ========================================
+// ADMIN SYSTEM FUNCTIONALITY
+// ========================================
+
+// Admin system state
+let adminState = {
+    isLoggedIn: false,
+    sessionStart: null,
+    commandHistory: [],
+    systemStats: {
+        cpuUsage: 72,
+        memoryUsage: 58,
+        storageUsage: 43,
+        activeSessions: 1
+    }
+};
+
+// Password prompt functionality
+function showPasswordPrompt() {
+    const passwordModal = document.getElementById('password-modal');
+    const passwordInput = document.getElementById('admin-password-input');
+    const passwordFeedback = document.getElementById('password-feedback');
+
+    // Reset modal state
+    passwordInput.value = '';
+    passwordInput.classList.remove('password-error');
+    passwordFeedback.innerHTML = '';
+
+    // Show modal
+    passwordModal.classList.remove('hidden');
+
+    // Focus input after animation
+    setTimeout(() => {
+        passwordInput.focus();
+    }, 100);
+
+    // Add event listeners
+    setupPasswordModalEvents();
+}
+
+function setupPasswordModalEvents() {
+    const passwordInput = document.getElementById('admin-password-input');
+    const passwordSubmit = document.getElementById('password-submit');
+    const passwordCancel = document.getElementById('password-cancel');
+    const passwordFeedback = document.getElementById('password-feedback');
+
+    // Submit button
+    passwordSubmit.onclick = () => {
+        const password = passwordInput.value;
+        validateAdminPassword(password);
+    };
+
+    // Cancel button
+    passwordCancel.onclick = () => {
+        closePasswordModal();
+    };
+
+    // Enter key submission
+    passwordInput.onkeydown = (e) => {
+        if (e.key === 'Enter') {
+            const password = passwordInput.value;
+            validateAdminPassword(password);
+        } else if (e.key === 'Escape') {
+            closePasswordModal();
+        }
+    };
+
+    // Real-time feedback
+    passwordInput.oninput = () => {
+        // Clear error state when typing
+        passwordInput.classList.remove('password-error');
+        passwordFeedback.innerHTML = '';
+    };
+}
+
+function validateAdminPassword(password) {
+    const passwordInput = document.getElementById('admin-password-input');
+    const passwordFeedback = document.getElementById('password-feedback');
+    const correctPassword = '1812';
+
+    if (password === correctPassword) {
+        // Success
+        passwordFeedback.innerHTML = '<span class="success-message">✓ Authentication Successful</span>';
+        passwordInput.style.borderColor = '#00ff00';
+
+        setTimeout(() => {
+            closePasswordModal();
+            showAdminPanel();
+            logSecurityEvent('Admin authentication successful', 'admin');
+        }, 1000);
+    } else {
+        // Error
+        passwordFeedback.innerHTML = '<span class="error-message">✗ Access Denied - Invalid Credentials</span>';
+        passwordInput.classList.add('password-error');
+        logSecurityEvent('Failed admin authentication attempt', 'unknown');
+
+        // Clear input after error
+        setTimeout(() => {
+            passwordInput.value = '';
+        }, 1000);
+    }
+}
+
+function closePasswordModal() {
+    const passwordModal = document.getElementById('password-modal');
+    passwordModal.classList.add('hidden');
+}
+
+// Admin panel functionality
+function showAdminPanel() {
+    const adminPanel = document.getElementById('admin-panel');
+
+    // Set admin state
+    adminState.isLoggedIn = true;
+    adminState.sessionStart = new Date();
+
+    // Initialize admin panel
+    initializeAdminPanel();
+
+    // Show panel
+    adminPanel.classList.remove('hidden');
+
+    // Setup admin panel events
+    setupAdminPanelEvents();
+
+    // Start real-time updates
+    startAdminUpdates();
+}
+
+function initializeAdminPanel() {
+    // Update system stats
+    updateSystemStats();
+
+    // Populate command history
+    updateCommandHistory();
+
+    // Update session logs
+    updateSessionLogs();
+
+    // Update security logs
+    updateSecurityLogs();
+
+    // Initialize icon replacements
+    setTimeout(() => {
+        feather.replace();
+    }, 100);
+}
+
+function setupAdminPanelEvents() {
+    // Close button
+    const adminClose = document.getElementById('admin-close');
+    adminClose.onclick = () => {
+        closeAdminPanel();
+    };
+
+    // Tab navigation
+    const tabButtons = document.querySelectorAll('.admin-nav-btn');
+    tabButtons.forEach(button => {
+        button.onclick = () => {
+            switchAdminTab(button.dataset.tab);
+
+            // Update active state
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        };
+    });
+
+    // Escape key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && adminState.isLoggedIn) {
+            closeAdminPanel();
+        }
+    });
+}
+
+function switchAdminTab(tabId) {
+    // Hide all tab contents
+    const tabContents = document.querySelectorAll('.admin-tab-content');
+    tabContents.forEach(content => {
+        content.classList.add('hidden');
+    });
+
+    // Show selected tab
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+        selectedTab.classList.remove('hidden');
+    }
+
+    // Refresh feather icons
+    setTimeout(() => {
+        feather.replace();
+    }, 50);
+}
+
+function closeAdminPanel() {
+    const adminPanel = document.getElementById('admin-panel');
+    adminPanel.classList.add('hidden');
+
+    // Reset admin state
+    adminState.isLoggedIn = false;
+    adminState.sessionStart = null;
+
+    // Stop updates
+    stopAdminUpdates();
+
+    logSecurityEvent('Admin session ended', 'admin');
+}
+
+// System monitoring functions
+function updateSystemStats() {
+    // Simulate dynamic system stats
+    adminState.systemStats.cpuUsage = Math.floor(Math.random() * 30) + 60; // 60-90%
+    adminState.systemStats.memoryUsage = Math.floor(Math.random() * 25) + 45; // 45-70%
+    adminState.systemStats.storageUsage = Math.floor(Math.random() * 15) + 40; // 40-55%
+
+    // Update UI
+    const cpuElement = document.getElementById('cpu-usage');
+    const memoryElement = document.getElementById('memory-usage');
+    const storageElement = document.getElementById('storage-usage');
+    const sessionsElement = document.getElementById('active-sessions');
+
+    if (cpuElement) cpuElement.textContent = adminState.systemStats.cpuUsage + '%';
+    if (memoryElement) memoryElement.textContent = adminState.systemStats.memoryUsage + '%';
+    if (storageElement) storageElement.textContent = adminState.systemStats.storageUsage + '%';
+    if (sessionsElement) sessionsElement.textContent = adminState.systemStats.activeSessions;
+
+    // Update progress bars
+    updateProgressBars();
+}
+
+function updateProgressBars() {
+    const bars = [
+        { element: '.admin-stat-card:nth-child(1) .stat-fill', value: adminState.systemStats.cpuUsage },
+        { element: '.admin-stat-card:nth-child(2) .stat-fill', value: adminState.systemStats.memoryUsage },
+        { element: '.admin-stat-card:nth-child(3) .stat-fill', value: adminState.systemStats.storageUsage }
+    ];
+
+    bars.forEach(bar => {
+        const element = document.querySelector(bar.element);
+        if (element) {
+            element.style.width = bar.value + '%';
+        }
+    });
+}
+
+function updateCommandHistory() {
+    const historyContainer = document.getElementById('admin-command-history');
+    if (!historyContainer) return;
+
+    // Get command history from global variable or create sample data
+    const history = window._cmdHistory || [
+        'help',
+        'status',
+        'scan',
+        'ai',
+        'cmd'
+    ];
+
+    historyContainer.innerHTML = '';
+
+    // Show last 10 commands
+    const recentHistory = history.slice(-10).reverse();
+
+    recentHistory.forEach((command, index) => {
+        const entry = document.createElement('div');
+        entry.className = 'command-entry';
+
+        const time = new Date(Date.now() - (index * 120000)).toLocaleTimeString();
+
+        entry.innerHTML = `
+            <span class="command-time">[${time}]</span>
+            <span class="command-text">${command}</span>
+        `;
+
+        historyContainer.appendChild(entry);
+    });
+}
+
+function updateSessionLogs() {
+    const sessionLogs = document.getElementById('session-logs');
+    if (!sessionLogs) return;
+
+    const logs = [
+        { time: '15:42:12', user: 'admin', action: 'Accessed admin panel' },
+        { time: '15:40:33', user: 'admin', action: 'Command executed: "cmd"' },
+        { time: '15:38:15', user: 'guest_user', action: 'Terminal command: "help"' },
+        { time: '15:35:22', user: 'guest_user', action: 'AI query submitted' },
+        { time: '15:32:08', user: 'guest_user', action: 'Calculator used' }
+    ];
+
+    sessionLogs.innerHTML = '';
+
+    logs.forEach(log => {
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = `
+            <span class="log-time">[${log.time}]</span>
+            <span class="log-user">${log.user}</span>
+            <span class="log-action">${log.action}</span>
+        `;
+        sessionLogs.appendChild(entry);
+    });
+}
+
+function updateSecurityLogs() {
+    // Security logs are updated via logSecurityEvent function
+}
+
+function logSecurityEvent(event, user) {
+    const timestamp = new Date().toLocaleTimeString();
+    const securityLogs = document.querySelector('.security-logs');
+
+    if (securityLogs) {
+        const entry = document.createElement('div');
+        entry.className = 'security-log-entry';
+
+        let icon = 'shield';
+        let iconColor = 'text-green-400';
+
+        if (event.includes('authentication')) {
+            if (event.includes('Failed')) {
+                icon = 'alert-triangle';
+                iconColor = 'text-red-400';
+            } else {
+                icon = 'key';
+                iconColor = 'text-blue-400';
+            }
+        }
+
+        entry.innerHTML = `
+            <i data-feather="${icon}" class="${iconColor} mr-2"></i>
+            <span>${event}</span>
+            <span class="log-time">${timestamp}</span>
+        `;
+
+        // Add to top of logs
+        securityLogs.insertBefore(entry, securityLogs.firstChild);
+
+        // Keep only last 10 entries
+        while (securityLogs.children.length > 10) {
+            securityLogs.removeChild(securityLogs.lastChild);
+        }
+
+        // Replace feather icons
+        setTimeout(() => {
+            feather.replace();
+        }, 50);
+    }
+}
+
+// Real-time updates
+let adminUpdateInterval;
+
+function startAdminUpdates() {
+    adminUpdateInterval = setInterval(() => {
+        if (adminState.isLoggedIn) {
+            updateSystemStats();
+            updateUptime();
+        }
+    }, 5000); // Update every 5 seconds
+}
+
+function stopAdminUpdates() {
+    if (adminUpdateInterval) {
+        clearInterval(adminUpdateInterval);
+        adminUpdateInterval = null;
+    }
+}
+
+function updateUptime() {
+    if (adminState.sessionStart) {
+        const now = new Date();
+        const diff = now - adminState.sessionStart;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const uptimeElement = document.getElementById('system-uptime');
+        if (uptimeElement) {
+            uptimeElement.textContent = `${hours}h ${minutes}m ${seconds}s (session)`;
+        }
+    }
+}
+
+// Initialize admin system when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Add admin functionality to existing initialization
+    logSecurityEvent('System initialized', 'system');
+
+    // Update help command to include admin command
+    const helpCommand = document.querySelector('case[value="help"]');
+    // This will be handled by the existing help system
 });
