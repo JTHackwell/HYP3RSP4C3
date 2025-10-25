@@ -500,7 +500,13 @@ terminalInput.addEventListener('keydown', async function(e) {
                     - SHADOW: Access quantum physics portal<br>
                     - AI: Access DeepSeek AI Assistant<br>
                     - CMD: Access administrative interface [AUTH REQUIRED]<br>
-                    - ADMIN: Alternative admin access [AUTH REQUIRED]`;
+                    - ADMIN: Alternative admin access [AUTH REQUIRED]<br>
+                    - FULLSCREEN (or FS): Toggle fullscreen terminal mode<br><br>
+                    <span class="text-cyan-400">FULLSCREEN MODE:</span><br>
+                    - Press ESC key to exit fullscreen mode<br>
+                    - Type 'FULLSCREEN' or 'FS' to toggle mode<br>
+                    - Click the red EXIT button in top-right corner<br>
+                    - Use admin panel > Customize > Layout to change modes`;
                     break;
                 case 'status':
                     response = `SYSTEM STATUS:<br>
@@ -635,6 +641,20 @@ terminalInput.addEventListener('keydown', async function(e) {
                     WARNING: TRAFFIC IS NOW VISIBLE TO NETWORK MONITORS`;
                     // Restore the original URL in the address bar
                     window.history.replaceState({}, '', window.location.pathname.replace('/connected', '/index.html'));
+                    break;
+                case 'fullscreen':
+                case 'fs':
+                    if (customizationState.layoutMode === 'fullscreen') {
+                        applyLayoutMode('default');
+                        response = `EXITING FULLSCREEN MODE...<br>
+                        RESTORING INTERFACE LAYOUT...<br>
+                        TERMINAL LAYOUT: [DEFAULT]`;
+                    } else {
+                        applyLayoutMode('fullscreen');
+                        response = `ENTERING FULLSCREEN MODE...<br>
+                        MAXIMIZING TERMINAL INTERFACE...<br>
+                        PRESS ESC OR TYPE 'FULLSCREEN' TO EXIT`;
+                    }
                     break;
                 case 'reboot':
                     response = `INITIATING SYSTEM REBOOT...<br>
@@ -1703,6 +1723,12 @@ function setupLayoutControls() {
 function applyLayoutMode(mode) {
     customizationState.layoutMode = mode;
 
+    // Remove existing fullscreen exit button
+    const existingExitBtn = document.querySelector('.fullscreen-exit');
+    if (existingExitBtn) {
+        existingExitBtn.remove();
+    }
+
     // Remove all layout classes
     document.body.className = document.body.className.replace(/layout-\w+/g, '');
 
@@ -1711,9 +1737,48 @@ function applyLayoutMode(mode) {
         document.body.classList.add(`layout-${mode}`);
     }
 
+    // Handle fullscreen mode specifically
+    if (mode === 'fullscreen') {
+        createFullscreenExitButton();
+        // Focus on terminal input to ensure it's accessible
+        setTimeout(() => {
+            const terminalInput = document.querySelector('.main-terminal .terminal-input input');
+            if (terminalInput) {
+                terminalInput.focus();
+            }
+        }, 100);
+    }
+
     saveCustomizationSettings();
     logSecurityEvent(`Layout changed to: ${mode}`, 'admin');
 }
+
+// Create fullscreen exit button
+function createFullscreenExitButton() {
+    const exitButton = document.createElement('button');
+    exitButton.className = 'fullscreen-exit';
+    exitButton.innerHTML = '<i data-feather="x"></i> EXIT FULLSCREEN';
+    exitButton.title = 'Click to exit fullscreen mode (or press ESC key)';
+
+    exitButton.addEventListener('click', () => {
+        applyLayoutMode('default');
+    });
+
+    document.body.appendChild(exitButton);
+
+    // Replace feather icons
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+}
+
+// Add keyboard shortcut for exiting fullscreen
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && customizationState.layoutMode === 'fullscreen') {
+        applyLayoutMode('default');
+        e.preventDefault();
+    }
+});
 
 // Apply Panel Width
 function applyPanelWidth(width) {

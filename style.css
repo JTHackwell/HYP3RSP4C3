@@ -2050,13 +2050,67 @@ body {
     margin-left: 320px;
 }
 
-.layout-fullscreen .jarvis-panel {
+.layout-fullscreen .jarvis-panel:not(.main-terminal) {
     display: none;
 }
 
-.layout-fullscreen .terminal-section {
-    width: 100%;
-    height: 100vh;
+.layout-fullscreen .jarvis-panel.main-terminal {
+    width: 100% !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    margin: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-fullscreen .jarvis-panel.main-terminal .terminal-output {
+    flex: 1;
+    height: auto !important;
+    max-height: calc(100vh - 100px);
+}
+
+.layout-fullscreen header,
+.layout-fullscreen .grid {
+    display: none;
+}
+
+
+/* Fullscreen exit button */
+
+.layout-fullscreen .fullscreen-exit {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: rgba(255, 0, 0, 0.8);
+    color: #ffffff;
+    border: 2px solid #ff0000;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: pulseRed 2s infinite;
+}
+
+.layout-fullscreen .fullscreen-exit:hover {
+    background: rgba(255, 0, 0, 1);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+@keyframes pulseRed {
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    }
 }
 
 .layout-minimal .terminal-output {
