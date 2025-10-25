@@ -158,7 +158,88 @@ function initializeDeepSeek() {
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize DeepSeek AI functionality
     initializeDeepSeek();
+
+    // Initialize Calculator functionality
+    initializeCalculator();
 });
+
+// Calculator functionality
+function initializeCalculator() {
+    const calcInput = document.getElementById('calc-input');
+    const calcEval = document.getElementById('calc-eval');
+    const calcGraph = document.getElementById('calc-graph');
+    const calcResult = document.getElementById('calc-result');
+    const calcGraphArea = document.getElementById('calc-graph-area');
+
+    if (calcInput && calcEval && calcGraph && calcResult && calcGraphArea) {
+        // Calculate button event listener
+        calcEval.addEventListener('click', () => {
+            const expression = calcInput.value.trim();
+            if (expression) {
+                try {
+                    const result = calculateExpression(expression);
+                    calcResult.innerHTML = result;
+
+                    // Add assistant help if available
+                    const help = assistantHelp(expression);
+                    if (help) {
+                        calcResult.innerHTML += `<br><span class="text-cyan-400"><b>Hint:</b> ${help}</span>`;
+                    }
+                } catch (error) {
+                    calcResult.innerHTML = `<span class="text-red-400">Error: ${error.message}</span>`;
+                }
+            }
+        });
+
+        // Graph button event listener
+        calcGraph.addEventListener('click', () => {
+            const expression = calcInput.value.trim();
+            if (expression) {
+                try {
+                    // Clear previous graph
+                    calcGraphArea.innerHTML = '';
+
+                    // Validate if expression is suitable for graphing
+                    if (isGraphableExpression(expression)) {
+                        plotGraph(expression, 'calc-graph-area');
+                        calcResult.innerHTML = `<span class="text-green-400">✓ Graph generated for: ${expression}</span>`;
+                    } else {
+                        calcResult.innerHTML = `<span class="text-yellow-400">⚠ Expression must contain 'x' variable for graphing.<br>Examples: sin(x), x^2, log(x), sqrt(x), abs(x-2)</span>`;
+                    }
+                } catch (error) {
+                    calcResult.innerHTML = `<span class="text-red-400">Graph Error: ${error.message}</span>`;
+                }
+            } else {
+                calcResult.innerHTML = `<span class="text-yellow-400">Please enter a mathematical expression first.</span>`;
+            }
+        }); // Enter key support for calculator input
+        calcInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                calcEval.click();
+            } else if (e.key === 'Enter' && e.shiftKey) {
+                e.preventDefault();
+                calcGraph.click();
+            }
+        });
+
+        // Add placeholder cycling for better UX
+        const placeholders = [
+            '[ENTER MATH/PHYSICS EXPRESSION] > sin(x), E=mc^2, 2+2*3',
+            '[GRAPHABLE FUNCTIONS] > x^2, cos(x), log(x), sqrt(x)',
+            '[PHYSICS FORMULAS] > E=mc^2, F=ma, v=d/t',
+            '[COMPLEX EXPRESSIONS] > sin(x)*cos(x), x^3-2*x+1'
+        ];
+        let placeholderIndex = 0;
+
+        setInterval(() => {
+            if (calcInput && calcInput !== document.activeElement) {
+                placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+                calcInput.placeholder = placeholders[placeholderIndex];
+            }
+        }, 4000);
+    }
+}
 // Terminal simulation
 const terminalInput = document.querySelector('.terminal-input input');
 const terminalOutput = document.querySelector('.terminal-output');
