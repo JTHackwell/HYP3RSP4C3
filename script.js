@@ -1566,6 +1566,9 @@ function loadCustomizationSettings() {
             console.log('Failed to load customization settings');
         }
     }
+
+    // Always ensure theme variables are set, even for default hacker theme
+    updateThemeVariables(customizationState.currentTheme);
 }
 
 // Save Settings to localStorage
@@ -1662,12 +1665,11 @@ function updateThemeVariables(themeName) {
     };
 
     const themeVars = themes[themeName] || themes.hacker;
+
     Object.keys(themeVars).forEach(property => {
         root.style.setProperty(property, themeVars[property]);
     });
-}
-
-// Layout Controls Setup
+} // Layout Controls Setup
 function setupLayoutControls() {
     const layoutMode = document.getElementById('layout-mode');
     const panelWidth = document.getElementById('panel-width');

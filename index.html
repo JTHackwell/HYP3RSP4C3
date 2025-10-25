@@ -3,9 +3,23 @@
 
 <head>
     <style>
+        /* CSS Variables for Dynamic Theming */
+        
+         :root {
+            --primary-bg: #000000;
+            --secondary-bg: #001100;
+            --primary-color: #00ff00;
+            --secondary-color: #00cc00;
+            --accent-color: #00ffaa;
+            --text-color: #ffffff;
+            --border-color: #333333;
+            --glow-color: #00ff00;
+            --glow-size: 8px;
+        }
+        
         body {
-            background: #000000;
-            color: #00ff00;
+            background: var(--primary-bg);
+            color: var(--primary-color);
             font-family: 'Courier New', 'Monaco', monospace;
         }
         
@@ -14,70 +28,70 @@
         .terminal-input,
         header,
         footer {
-            background: #000000 !important;
-            color: #00ff00 !important;
-            border-color: #00ff00 !important;
+            background: var(--primary-bg) !important;
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
         }
         
         .jarvis-btn,
         .px-3,
         .py-1,
         .rounded {
-            background: #000000 !important;
-            color: #00ff00 !important;
-            border: 1px solid #00ff00 !important;
-            text-shadow: 0 0 8px #00ff00;
+            background: var(--primary-bg) !important;
+            color: var(--primary-color) !important;
+            border: 1px solid var(--primary-color) !important;
+            text-shadow: 0 0 var(--glow-size) var(--glow-color);
         }
         
         .jarvis-btn:hover {
-            background: #001a00 !important;
-            color: #00ff00 !important;
-            box-shadow: 0 0 20px #00ff00;
+            background: var(--secondary-bg) !important;
+            color: var(--primary-color) !important;
+            box-shadow: 0 0 20px var(--glow-color);
         }
         
         .text-green-300,
         .text-green-400,
         .text-green-400,
         .text-green-300 {
-            color: #00ff00 !important;
+            color: var(--primary-color) !important;
         }
         
         .bg-gray-900,
         .bg-gray-800 {
-            background: #000000 !important;
-            border: 1px solid #00ff00;
+            background: var(--primary-bg) !important;
+            border: 1px solid var(--primary-color);
         }
         
         .scanline {
-            background: repeating-linear-gradient(0deg, rgba(0, 255, 0, 0.1) 0px, rgba(0, 255, 0, 0.1) 1px, transparent 2px, transparent 4px);
+            background: repeating-linear-gradient(0deg, var(--glow-color) 0px, var(--glow-color) 1px, transparent 2px, transparent 4px);
+            opacity: 0.1;
         }
-        /* Hacker/Spy aesthetic additions */
         
         .matrix-bg {
-            background: linear-gradient(45deg, #000000 25%, transparent 25%), linear-gradient(-45deg, #000000 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #001100 75%), linear-gradient(-45deg, transparent 75%, #001100 75%);
+            background: linear-gradient(45deg, var(--primary-bg) 25%, transparent 25%), linear-gradient(-45deg, var(--primary-bg) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%), linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
         }
         
         .hacker-glow {
-            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+            text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 30px var(--glow-color);
             animation: pulse-glow 2s infinite;
         }
         
         @keyframes pulse-glow {
             0%,
             100% {
-                text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+                text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 30px var(--glow-color);
             }
             50% {
-                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
+                text-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color), 0 0 15px var(--glow-color);
             }
         }
         
         .terminal-cursor::after {
             content: "█";
             animation: blink 1s infinite;
-            color: #00ff00;
+            color: var(--primary-color);
         }
         
         @keyframes blink {
@@ -93,14 +107,14 @@
         
         input,
         textarea {
-            background: #000000 !important;
-            color: #00ff00 !important;
-            border: 1px solid #00ff00 !important;
+            background: var(--primary-bg) !important;
+            color: var(--primary-color) !important;
+            border: 1px solid var(--primary-color) !important;
         }
         
         input::placeholder,
         textarea::placeholder {
-            color: #006600 !important;
+            color: var(--secondary-color) !important;
         }
     </style>
     <meta charset="UTF-8">
