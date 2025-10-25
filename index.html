@@ -583,6 +583,173 @@
                         </div>
                     </div>
 
+                    <!-- Customization Tab -->
+                    <div class="admin-tab-content hidden" id="admin-customization">
+                        <h3 class="text-xl mb-4 hacker-glow">Site Customization</h3>
+
+                        <!-- Theme Selection -->
+                        <div class="admin-section">
+                            <h4 class="text-lg mb-3">Color Themes</h4>
+                            <div class="theme-grid">
+                                <div class="theme-option active" data-theme="hacker">
+                                    <div class="theme-preview hacker-theme">
+                                        <div class="preview-bg"></div>
+                                        <div class="preview-text"></div>
+                                    </div>
+                                    <span class="theme-name">Hacker Green</span>
+                                </div>
+                                <div class="theme-option" data-theme="cyberpunk">
+                                    <div class="theme-preview cyberpunk-theme">
+                                        <div class="preview-bg"></div>
+                                        <div class="preview-text"></div>
+                                    </div>
+                                    <span class="theme-name">Cyberpunk Blue</span>
+                                </div>
+                                <div class="theme-option" data-theme="matrix">
+                                    <div class="theme-preview matrix-theme">
+                                        <div class="preview-bg"></div>
+                                        <div class="preview-text"></div>
+                                    </div>
+                                    <span class="theme-name">Matrix Rain</span>
+                                </div>
+                                <div class="theme-option" data-theme="neon">
+                                    <div class="theme-preview neon-theme">
+                                        <div class="preview-bg"></div>
+                                        <div class="preview-text"></div>
+                                    </div>
+                                    <span class="theme-name">Neon Pink</span>
+                                </div>
+                                <div class="theme-option" data-theme="terminal">
+                                    <div class="theme-preview terminal-theme">
+                                        <div class="preview-bg"></div>
+                                        <div class="preview-text"></div>
+                                    </div>
+                                    <span class="theme-name">Retro Terminal</span>
+                                </div>
+                                <div class="theme-option" data-theme="dark">
+                                    <div class="theme-preview dark-theme">
+                                        <div class="preview-bg"></div>
+                                        <div class="preview-text"></div>
+                                    </div>
+                                    <span class="theme-name">Dark Mode</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layout Options -->
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Layout Settings</h4>
+                            <div class="layout-settings">
+                                <div class="setting-row">
+                                    <label class="setting-label">Layout Mode:</label>
+                                    <select id="layout-mode" class="custom-select">
+                                        <option value="default">Default Grid</option>
+                                        <option value="vertical">Vertical Stack</option>
+                                        <option value="sidebar">Sidebar Layout</option>
+                                        <option value="fullscreen">Fullscreen Terminal</option>
+                                        <option value="minimal">Minimal Mode</option>
+                                    </select>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">Panel Width:</label>
+                                    <input type="range" id="panel-width" min="300" max="800" value="400" class="custom-slider">
+                                    <span id="panel-width-value">400px</span>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">Terminal Height:</label>
+                                    <input type="range" id="terminal-height" min="200" max="600" value="400" class="custom-slider">
+                                    <span id="terminal-height-value">400px</span>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">Font Size:</label>
+                                    <input type="range" id="font-size" min="10" max="24" value="14" class="custom-slider">
+                                    <span id="font-size-value">14px</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Effects -->
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Visual Effects</h4>
+                            <div class="effects-settings">
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox" id="enable-scanlines" checked> Scanlines Effect
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox" id="enable-glow" checked> Text Glow
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox" id="enable-animations" checked> Typing Animations
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox" id="enable-particles" checked> Background Particles
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">
+                                        <input type="checkbox" id="enable-matrix"> Matrix Rain Background
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">Animation Speed:</label>
+                                    <input type="range" id="animation-speed" min="0.5" max="3" step="0.1" value="1" class="custom-slider">
+                                    <span id="animation-speed-value">1x</span>
+                                </div>
+                                <div class="setting-row">
+                                    <label class="setting-label">Glow Intensity:</label>
+                                    <input type="range" id="glow-intensity" min="0" max="20" value="8" class="custom-slider">
+                                    <span id="glow-intensity-value">8px</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom CSS Editor -->
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Custom CSS</h4>
+                            <div class="css-editor-container">
+                                <textarea id="custom-css" class="css-editor" placeholder="/* Add your custom CSS here */
+body {
+    /* Example: change background */
+    background: linear-gradient(45deg, #000, #001100);
+}
+
+.terminal-output {
+    /* Example: custom terminal styling */
+    border-radius: 10px;
+}"></textarea>
+                                <div class="css-actions">
+                                    <button id="apply-css" class="admin-btn">Apply Custom CSS</button>
+                                    <button id="reset-css" class="admin-btn">Reset to Default</button>
+                                    <button id="save-theme" class="admin-btn">Save as Custom Theme</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Import/Export Settings -->
+                        <div class="admin-section mt-6">
+                            <h4 class="text-lg mb-3">Settings Management</h4>
+                            <div class="settings-actions">
+                                <button id="export-settings" class="admin-btn">
+                                    <i data-feather="download"></i> Export Settings
+                                </button>
+                                <button id="import-settings" class="admin-btn">
+                                    <i data-feather="upload"></i> Import Settings
+                                </button>
+                                <input type="file" id="settings-file" accept=".json" style="display: none;">
+                                <button id="reset-all" class="admin-btn admin-btn-danger">
+                                    <i data-feather="refresh-cw"></i> Reset All Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- DevOps Dashboard Tab -->
                     <div class="admin-tab-content hidden" id="admin-devops">
                         <h3 class="text-xl mb-4 hacker-glow">DevOps Operations Dashboard</h3>
@@ -1025,6 +1192,9 @@
                     </button>
                     <button class="admin-nav-btn" data-tab="admin-monitoring">
                         <i data-feather="bar-chart-2"></i>Monitor
+                    </button>
+                    <button class="admin-nav-btn" data-tab="admin-customization">
+                        <i data-feather="palette"></i>Customize
                     </button>
                     <button class="admin-nav-btn" data-tab="admin-terminal">
                         <i data-feather="terminal"></i>Terminal

@@ -1493,7 +1493,582 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start DevOps updates
     startDevOpsUpdates();
 
+    // Initialize customization features
+    initializeCustomization();
+
     // Update help command to include admin command
     const helpCommand = document.querySelector('case[value="help"]');
     // This will be handled by the existing help system
 });
+
+// ========================================
+// CUSTOMIZATION FEATURES FUNCTIONALITY
+// ========================================
+
+// Customization State
+let customizationState = {
+    currentTheme: 'hacker',
+    layoutMode: 'default',
+    panelWidth: 400,
+    terminalHeight: 400,
+    fontSize: 14,
+    effects: {
+        scanlines: true,
+        glow: true,
+        animations: true,
+        particles: true,
+        matrixRain: false
+    },
+    animationSpeed: 1,
+    glowIntensity: 8,
+    customCSS: ''
+};
+
+// Initialize Customization System
+function initializeCustomization() {
+    loadCustomizationSettings();
+    setupThemeSelection();
+    setupLayoutControls();
+    setupEffectControls();
+    setupCSSEditor();
+    setupSettingsManagement();
+    applyCurrentSettings();
+}
+
+// Load Settings from localStorage
+function loadCustomizationSettings() {
+    const saved = localStorage.getItem('hyp3rsp4c3-customization');
+    if (saved) {
+        try {
+            const settings = JSON.parse(saved);
+            customizationState = {...customizationState, ...settings };
+        } catch (error) {
+            console.log('Failed to load customization settings');
+        }
+    }
+}
+
+// Save Settings to localStorage
+function saveCustomizationSettings() {
+    localStorage.setItem('hyp3rsp4c3-customization', JSON.stringify(customizationState));
+    logSecurityEvent('Customization settings saved', 'admin');
+}
+
+// Theme Selection Setup
+function setupThemeSelection() {
+    const themeOptions = document.querySelectorAll('.theme-option');
+
+    themeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            // Remove active class from all options
+            themeOptions.forEach(opt => opt.classList.remove('active'));
+
+            // Add active class to clicked option
+            option.classList.add('active');
+
+            // Get theme name and apply
+            const themeName = option.dataset.theme;
+            applyTheme(themeName);
+        });
+    });
+
+    // Set initial active theme
+    const activeTheme = document.querySelector(`[data-theme="${customizationState.currentTheme}"]`);
+    if (activeTheme) {
+        activeTheme.classList.add('active');
+    }
+}
+
+// Apply Theme
+function applyTheme(themeName) {
+    customizationState.currentTheme = themeName;
+
+    // Remove all theme classes
+    document.body.className = document.body.className.replace(/theme-\w+/g, '');
+
+    // Add new theme class
+    if (themeName !== 'hacker') {
+        document.body.classList.add(`theme-${themeName}`);
+    }
+
+    // Update CSS variables for theme
+    updateThemeVariables(themeName);
+
+    saveCustomizationSettings();
+    logSecurityEvent(`Theme changed to: ${themeName}`, 'admin');
+}
+
+// Update CSS Variables for Theme
+function updateThemeVariables(themeName) {
+    const root = document.documentElement;
+
+    const themes = {
+        hacker: {
+            '--primary-bg': '#000000',
+            '--secondary-bg': '#001100',
+            '--primary-color': '#00ff00',
+            '--glow-color': '#00ff00'
+        },
+        cyberpunk: {
+            '--primary-bg': '#0a0a0a',
+            '--secondary-bg': '#1a0a2a',
+            '--primary-color': '#00ccff',
+            '--glow-color': '#00ccff'
+        },
+        matrix: {
+            '--primary-bg': '#000a00',
+            '--secondary-bg': '#001a00',
+            '--primary-color': '#33ff33',
+            '--glow-color': '#33ff33'
+        },
+        neon: {
+            '--primary-bg': '#0a0a0a',
+            '--secondary-bg': '#2a0a1a',
+            '--primary-color': '#ff00aa',
+            '--glow-color': '#ff00aa'
+        },
+        terminal: {
+            '--primary-bg': '#1a1a00',
+            '--secondary-bg': '#2a2a00',
+            '--primary-color': '#ffaa00',
+            '--glow-color': '#ffaa00'
+        },
+        dark: {
+            '--primary-bg': '#1a1a1a',
+            '--secondary-bg': '#2a2a2a',
+            '--primary-color': '#ffffff',
+            '--glow-color': 'rgba(255, 255, 255, 0.5)'
+        }
+    };
+
+    const themeVars = themes[themeName] || themes.hacker;
+    Object.keys(themeVars).forEach(property => {
+        root.style.setProperty(property, themeVars[property]);
+    });
+}
+
+// Layout Controls Setup
+function setupLayoutControls() {
+    const layoutMode = document.getElementById('layout-mode');
+    const panelWidth = document.getElementById('panel-width');
+    const terminalHeight = document.getElementById('terminal-height');
+    const fontSize = document.getElementById('font-size');
+
+    // Layout mode change
+    if (layoutMode) {
+        layoutMode.value = customizationState.layoutMode;
+        layoutMode.addEventListener('change', (e) => {
+            applyLayoutMode(e.target.value);
+        });
+    }
+
+    // Panel width slider
+    if (panelWidth) {
+        panelWidth.value = customizationState.panelWidth;
+        updateSliderValue('panel-width-value', customizationState.panelWidth + 'px');
+        panelWidth.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            customizationState.panelWidth = value;
+            updateSliderValue('panel-width-value', value + 'px');
+            applyPanelWidth(value);
+        });
+    }
+
+    // Terminal height slider
+    if (terminalHeight) {
+        terminalHeight.value = customizationState.terminalHeight;
+        updateSliderValue('terminal-height-value', customizationState.terminalHeight + 'px');
+        terminalHeight.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            customizationState.terminalHeight = value;
+            updateSliderValue('terminal-height-value', value + 'px');
+            applyTerminalHeight(value);
+        });
+    }
+
+    // Font size slider
+    if (fontSize) {
+        fontSize.value = customizationState.fontSize;
+        updateSliderValue('font-size-value', customizationState.fontSize + 'px');
+        fontSize.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            customizationState.fontSize = value;
+            updateSliderValue('font-size-value', value + 'px');
+            applyFontSize(value);
+        });
+    }
+}
+
+// Apply Layout Mode
+function applyLayoutMode(mode) {
+    customizationState.layoutMode = mode;
+
+    // Remove all layout classes
+    document.body.className = document.body.className.replace(/layout-\w+/g, '');
+
+    // Add new layout class
+    if (mode !== 'default') {
+        document.body.classList.add(`layout-${mode}`);
+    }
+
+    saveCustomizationSettings();
+    logSecurityEvent(`Layout changed to: ${mode}`, 'admin');
+}
+
+// Apply Panel Width
+function applyPanelWidth(width) {
+    const panels = document.querySelectorAll('.jarvis-panel');
+    panels.forEach(panel => {
+        panel.style.width = width + 'px';
+    });
+    saveCustomizationSettings();
+}
+
+// Apply Terminal Height
+function applyTerminalHeight(height) {
+    const terminals = document.querySelectorAll('.terminal-output');
+    terminals.forEach(terminal => {
+        terminal.style.height = height + 'px';
+    });
+    saveCustomizationSettings();
+}
+
+// Apply Font Size
+function applyFontSize(size) {
+    document.documentElement.style.setProperty('--font-size', size + 'px');
+    document.body.style.fontSize = size + 'px';
+    saveCustomizationSettings();
+}
+
+// Effects Controls Setup
+function setupEffectControls() {
+    const effects = ['scanlines', 'glow', 'animations', 'particles', 'matrix'];
+
+    effects.forEach(effect => {
+        const checkbox = document.getElementById(`enable-${effect}`);
+        if (checkbox) {
+            checkbox.checked = customizationState.effects[effect];
+            checkbox.addEventListener('change', (e) => {
+                customizationState.effects[effect] = e.target.checked;
+                applyEffect(effect, e.target.checked);
+            });
+        }
+    });
+
+    // Animation speed slider
+    const animationSpeed = document.getElementById('animation-speed');
+    if (animationSpeed) {
+        animationSpeed.value = customizationState.animationSpeed;
+        updateSliderValue('animation-speed-value', customizationState.animationSpeed + 'x');
+        animationSpeed.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            customizationState.animationSpeed = value;
+            updateSliderValue('animation-speed-value', value + 'x');
+            applyAnimationSpeed(value);
+        });
+    }
+
+    // Glow intensity slider
+    const glowIntensity = document.getElementById('glow-intensity');
+    if (glowIntensity) {
+        glowIntensity.value = customizationState.glowIntensity;
+        updateSliderValue('glow-intensity-value', customizationState.glowIntensity + 'px');
+        glowIntensity.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            customizationState.glowIntensity = value;
+            updateSliderValue('glow-intensity-value', value + 'px');
+            applyGlowIntensity(value);
+        });
+    }
+}
+
+// Apply Effects
+function applyEffect(effect, enabled) {
+    switch (effect) {
+        case 'scanlines':
+            document.body.classList.toggle('no-scanlines', !enabled);
+            break;
+        case 'glow':
+            document.body.classList.toggle('no-glow', !enabled);
+            break;
+        case 'animations':
+            document.body.classList.toggle('no-animations', !enabled);
+            break;
+        case 'particles':
+            document.body.classList.toggle('no-particles', !enabled);
+            break;
+        case 'matrix':
+            document.body.classList.toggle('matrix-rain-bg', enabled);
+            break;
+    }
+    saveCustomizationSettings();
+    logSecurityEvent(`Effect ${effect}: ${enabled ? 'enabled' : 'disabled'}`, 'admin');
+}
+
+// Apply Animation Speed
+function applyAnimationSpeed(speed) {
+    document.documentElement.style.setProperty('--animation-speed', speed + 's');
+    saveCustomizationSettings();
+}
+
+// Apply Glow Intensity
+function applyGlowIntensity(intensity) {
+    document.documentElement.style.setProperty('--glow-size', intensity + 'px');
+    saveCustomizationSettings();
+}
+
+// Update Slider Display Values
+function updateSliderValue(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+// CSS Editor Setup
+function setupCSSEditor() {
+    const cssEditor = document.getElementById('custom-css');
+    const applyBtn = document.getElementById('apply-css');
+    const resetBtn = document.getElementById('reset-css');
+    const saveThemeBtn = document.getElementById('save-theme');
+
+    if (cssEditor) {
+        cssEditor.value = customizationState.customCSS;
+    }
+
+    if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+            const css = cssEditor.value;
+            applyCustomCSS(css);
+        });
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            resetCustomCSS();
+            cssEditor.value = '';
+        });
+    }
+
+    if (saveThemeBtn) {
+        saveThemeBtn.addEventListener('click', () => {
+            saveCustomTheme();
+        });
+    }
+}
+
+// Apply Custom CSS
+function applyCustomCSS(css) {
+    // Remove existing custom CSS
+    const existingStyle = document.getElementById('custom-css-style');
+    if (existingStyle) {
+        existingStyle.remove();
+    }
+
+    // Add new custom CSS
+    if (css.trim()) {
+        const style = document.createElement('style');
+        style.id = 'custom-css-style';
+        style.textContent = css;
+        document.head.appendChild(style);
+
+        customizationState.customCSS = css;
+        saveCustomizationSettings();
+        logSecurityEvent('Custom CSS applied', 'admin');
+    }
+}
+
+// Reset Custom CSS
+function resetCustomCSS() {
+    const existingStyle = document.getElementById('custom-css-style');
+    if (existingStyle) {
+        existingStyle.remove();
+    }
+    customizationState.customCSS = '';
+    saveCustomizationSettings();
+    logSecurityEvent('Custom CSS reset', 'admin');
+}
+
+// Save Custom Theme
+function saveCustomTheme() {
+    const themeName = prompt('Enter a name for your custom theme:');
+    if (themeName && themeName.trim()) {
+        const customThemes = JSON.parse(localStorage.getItem('hyp3rsp4c3-custom-themes') || '{}');
+        customThemes[themeName] = {...customizationState };
+        localStorage.setItem('hyp3rsp4c3-custom-themes', JSON.stringify(customThemes));
+        logSecurityEvent(`Custom theme saved: ${themeName}`, 'admin');
+        alert(`Theme "${themeName}" saved successfully!`);
+    }
+}
+
+// Settings Management Setup
+function setupSettingsManagement() {
+    const exportBtn = document.getElementById('export-settings');
+    const importBtn = document.getElementById('import-settings');
+    const resetBtn = document.getElementById('reset-all');
+    const fileInput = document.getElementById('settings-file');
+
+    if (exportBtn) {
+        exportBtn.addEventListener('click', exportSettings);
+    }
+
+    if (importBtn) {
+        importBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+    }
+
+    if (fileInput) {
+        fileInput.addEventListener('change', importSettings);
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetAllSettings);
+    }
+}
+
+// Export Settings
+function exportSettings() {
+    const settings = {
+        customization: customizationState,
+        timestamp: new Date().toISOString(),
+        version: '1.0'
+    };
+
+    const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `hyp3rsp4c3-settings-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    logSecurityEvent('Settings exported', 'admin');
+}
+
+// Import Settings
+function importSettings(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const settings = JSON.parse(e.target.result);
+                if (settings.customization) {
+                    customizationState = {...customizationState, ...settings.customization };
+                    saveCustomizationSettings();
+                    applyCurrentSettings();
+                    updateCustomizationUI();
+                    logSecurityEvent('Settings imported successfully', 'admin');
+                    alert('Settings imported successfully! Refresh the page to see all changes.');
+                }
+            } catch (error) {
+                alert('Invalid settings file format');
+                logSecurityEvent('Settings import failed: Invalid format', 'admin');
+            }
+        };
+        reader.readAsText(file);
+    }
+    event.target.value = ''; // Reset file input
+}
+
+// Reset All Settings
+function resetAllSettings() {
+    if (confirm('Are you sure you want to reset all customization settings? This action cannot be undone.')) {
+        localStorage.removeItem('hyp3rsp4c3-customization');
+        localStorage.removeItem('hyp3rsp4c3-custom-themes');
+
+        // Reset to defaults
+        customizationState.currentTheme = 'hacker';
+        customizationState.layoutMode = 'default';
+        customizationState.panelWidth = 400;
+        customizationState.terminalHeight = 400;
+        customizationState.fontSize = 14;
+        customizationState.effects = {
+            scanlines: true,
+            glow: true,
+            animations: true,
+            particles: true,
+            matrixRain: false
+        };
+        customizationState.animationSpeed = 1;
+        customizationState.glowIntensity = 8;
+        customizationState.customCSS = '';
+
+        applyCurrentSettings();
+        updateCustomizationUI();
+        resetCustomCSS();
+
+        logSecurityEvent('All settings reset to defaults', 'admin');
+        alert('All settings have been reset to defaults!');
+    }
+}
+
+// Apply Current Settings
+function applyCurrentSettings() {
+    applyTheme(customizationState.currentTheme);
+    applyLayoutMode(customizationState.layoutMode);
+    applyPanelWidth(customizationState.panelWidth);
+    applyTerminalHeight(customizationState.terminalHeight);
+    applyFontSize(customizationState.fontSize);
+
+    // Apply effects
+    Object.keys(customizationState.effects).forEach(effect => {
+        applyEffect(effect, customizationState.effects[effect]);
+    });
+
+    applyAnimationSpeed(customizationState.animationSpeed);
+    applyGlowIntensity(customizationState.glowIntensity);
+
+    // Apply custom CSS
+    if (customizationState.customCSS) {
+        applyCustomCSS(customizationState.customCSS);
+    }
+}
+
+// Update Customization UI
+function updateCustomizationUI() {
+    // Update theme selection
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.classList.remove('active');
+    });
+    const activeTheme = document.querySelector(`[data-theme="${customizationState.currentTheme}"]`);
+    if (activeTheme) {
+        activeTheme.classList.add('active');
+    }
+
+    // Update layout controls
+    const layoutMode = document.getElementById('layout-mode');
+    if (layoutMode) layoutMode.value = customizationState.layoutMode;
+
+    // Update sliders
+    const sliders = [
+        { id: 'panel-width', value: customizationState.panelWidth, suffix: 'px' },
+        { id: 'terminal-height', value: customizationState.terminalHeight, suffix: 'px' },
+        { id: 'font-size', value: customizationState.fontSize, suffix: 'px' },
+        { id: 'animation-speed', value: customizationState.animationSpeed, suffix: 'x' },
+        { id: 'glow-intensity', value: customizationState.glowIntensity, suffix: 'px' }
+    ];
+
+    sliders.forEach(slider => {
+        const element = document.getElementById(slider.id);
+        if (element) {
+            element.value = slider.value;
+            updateSliderValue(`${slider.id}-value`, slider.value + slider.suffix);
+        }
+    });
+
+    // Update effect checkboxes
+    Object.keys(customizationState.effects).forEach(effect => {
+        const checkbox = document.getElementById(`enable-${effect}`);
+        if (checkbox) {
+            checkbox.checked = customizationState.effects[effect];
+        }
+    });
+
+    // Update CSS editor
+    const cssEditor = document.getElementById('custom-css');
+    if (cssEditor) {
+        cssEditor.value = customizationState.customCSS;
+    }
+}
